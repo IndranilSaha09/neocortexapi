@@ -3,7 +3,6 @@ using NeoCortexApi.Entities;
 using NeoCortexApi.Network;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -18,11 +17,15 @@ namespace NeoCortexApi
     /// </summary>
     public class Predictor
     {
+        private CortexLayer<object, object> layer1;
+        private Connections mem;
+        private KNeighborsClassifier<string, ComputeCycle> classifier { get; set; }
+
         private Connections connections { get; set; }
 
         private CortexLayer<object, object> layer { get; set; }
 
-        private HtmClassifier<string, ComputeCycle> classifier { get; set; }
+        //private HtmClassifier<string, ComputeCycle> classifier { get; set; }
 
         /// <summary>
         /// Initializes the predictor functionality.
@@ -31,21 +34,38 @@ namespace NeoCortexApi
         /// <param name="connections">The HTM memory in the learned state.</param>
         /// <param name="classifier">The classifier that contains the state of learned sequences.</param>
 
-        public Predictor(CortexLayer<object, object> layer, Connections connections, HtmClassifier<string, ComputeCycle> classifier)
+        public Predictor(CortexLayer<object, object> layer, Connections connections, KNeighborsClassifier<string, ComputeCycle> classifier)
         {
             this.connections = connections;
             this.layer = layer;
             this.classifier = classifier;
         }
-
         /// <summary>
         /// Starts predicting of the next subsequences.
         /// </summary>
         public void Reset()
         {
-            var tm = this.layer.HtmModules.FirstOrDefault(m => m.Value is TemporalMemory);
-            ((TemporalMemory)tm.Value).Reset(this.connections);
+            if (this.layer != null)
+            {
+                var tmModule = this.layer.HtmModules.FirstOrDefault(m => m.Value is TemporalMemory);
+                if (tmModule.Value != null)
+                {
+                    var tm = (TemporalMemory)tmModule.Value;
+                    tm.Reset(this.connections);
+                }
+                else
+                {
+                    // Handle the case when TemporalMemory module is not found
+                    throw new InvalidOperationException("TemporalMemory module not found.");
+                }
+            }
+            else
+            {
+                // Handle the case when layer is null
+                throw new InvalidOperationException("Layer is null.");
+            }
         }
+
 
 
         /// <summary>
@@ -60,16 +80,6 @@ namespace NeoCortexApi
             List<ClassifierResult<string>> predictedInputValues = this.classifier.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 3);
 
             return predictedInputValues;
-        }
-
-        public void Serialize(object obj, string name, StreamWriter sw)
-        {
-            this.connections.Serialize(obj, name, sw);
-        }
-
-        public static object Deserialize<T>(StreamReader sr, string name)
-        {
-            throw new NotImplementedException();
         }
     }
 }
