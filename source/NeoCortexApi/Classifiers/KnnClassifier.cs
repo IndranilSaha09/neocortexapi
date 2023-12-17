@@ -48,15 +48,8 @@ namespace NeoCortexApi.Classifiers
 
         private int CalculateEuclideanDistance(int[] classifiedSequence, int unclassifiedIndex)
         {
-            int shortestDistance = unclassifiedIndex;
-
-            foreach (var classifiedIdx in classifiedSequence)
-            {
-                var distance = Math.Abs(classifiedIdx - unclassifiedIndex);
-                shortestDistance = Math.Min(shortestDistance, distance);
-            }
-
-            return shortestDistance;
+            int sumSquaredDifferences = classifiedSequence.Sum(idx => (idx - unclassifiedIndex) * (idx - unclassifiedIndex));
+            return (int)Math.Sqrt(sumSquaredDifferences);
         }
 
         private Dictionary<int, int> GenerateDistanceTable(int[] classifiedSequence, int[] unclassifiedSequence)
