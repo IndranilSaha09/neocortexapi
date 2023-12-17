@@ -93,8 +93,28 @@ namespace NeoCortexApiSample
         }
         private static void RunMultiSequenceLearningExperimentWithImage()
         {
+            string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string targetDirectoryName = "NeoCortexApiSample"; // Target directory name
+
+            string targetDirectory = currentDirectory;
+
+            while (targetDirectory != null && !targetDirectory.EndsWith(targetDirectoryName))
+            {
+                targetDirectory = Directory.GetParent(targetDirectory)?.FullName;
+            }
+
+            if (targetDirectory != null)
+            {
+                Console.WriteLine("Target Directory Found: " + targetDirectory);
+            }
+            else
+            {
+                Console.WriteLine("Target Directory not found.");
+            }
+
             string folderName = "input_image"; // Folder name containing the images
-            string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folderName);
+            string folderPath = Path.Combine(targetDirectory, folderName);
+
 
             Console.WriteLine("Folder Path: " + folderPath);
 
