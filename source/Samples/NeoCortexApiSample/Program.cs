@@ -34,8 +34,8 @@ namespace NeoCortexApiSample
 
 
             //RunMultiSimpleSequenceLearningExperiment();
-            //RunMultiSequenceLearningExperiment();
-            RunMultiSequenceLearningExperimentWithImage();
+            RunMultiSequenceLearningExperiment();
+            //RunMultiSequenceLearningExperimentWithImage();
         }
 
         private static void RunMultiSimpleSequenceLearningExperiment()
@@ -65,10 +65,10 @@ namespace NeoCortexApiSample
             //sequences.Add("S1", new List<double>(new double[] { 0.0, 1.0, 0.0, 2.0, 3.0, 4.0, 5.0, 6.0, 5.0, 4.0, 3.0, 7.0, 1.0, 9.0, 12.0, 11.0, 12.0, 13.0, 14.0, 11.0, 12.0, 14.0, 5.0, 7.0, 6.0, 9.0, 3.0, 4.0, 3.0, 4.0, 3.0, 4.0 }));
             //sequences.Add("S2", new List<double>(new double[] { 0.8, 2.0, 0.0, 3.0, 3.0, 4.0, 5.0, 6.0, 5.0, 7.0, 2.0, 7.0, 1.0, 9.0, 11.0, 11.0, 10.0, 13.0, 14.0, 11.0, 7.0, 6.0, 5.0, 7.0, 6.0, 5.0, 3.0, 2.0, 3.0, 4.0, 3.0, 4.0 }));
 
-            //sequences.Add("S1", new List<double>(new double[] { 10.0, 1.0, 2.0, 3.0, 4.0, 2.0, 5.0, }));
-            //sequences.Add("S2", new List<double>(new double[] { 8.0, 1.0, 2.0, 9.0, 10.0, 7.0, 11.00 }));
-            sequences.Add("S1", new List<double>(new double[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }));
-            sequences.Add("S2", new List<double>(new double[] { 'i','j','k','l','m','n','o','p' }));
+            sequences.Add("S1", new List<double>(new double[] { 10.0, 1.0, 2.0, 3.0, 4.0, 2.0, 5.0, }));
+            sequences.Add("S2", new List<double>(new double[] { 8.0, 1.0, 2.0, 9.0, 10.0, 7.0, 11.00 }));
+            //sequences.Add("S1", new List<double>(new double[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' }));
+            //sequences.Add("S2", new List<double>(new double[] { 'i','j','k','l','m','n','o','p' }));
             //
             // Prototype for building the prediction engine.
             MultiSequenceLearning experiment = new MultiSequenceLearning();
@@ -83,13 +83,13 @@ namespace NeoCortexApiSample
             var list3 = new double[] { 8.0, 1.0, 2.0 };
 
             predictor.Reset();
-            //PredictNextElement(predictor, list1);
+            PredictNextElement(predictor, list1);
 
-            //predictor.Reset();
-            //PredictNextElement(predictor, list2);
+            predictor.Reset();
+            PredictNextElement(predictor, list2);
 
-            //predictor.Reset();
-            //PredictNextElement(predictor, list3);
+            predictor.Reset();
+            PredictNextElement(predictor, list3);
         }
         private static void RunMultiSequenceLearningExperimentWithImage()
         {

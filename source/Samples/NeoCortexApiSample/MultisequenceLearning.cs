@@ -35,7 +35,7 @@ namespace NeoCortexApiSample
                 GlobalInhibition = true,
                 LocalAreaDensity = -1,
                 NumActiveColumnsPerInhArea = 0.02 * numColumns,
-                PotentialRadius = (int)(0.35 * inputBits),
+                PotentialRadius = (int)(0.15 * inputBits),
                 //InhibitionRadius = 15,
 
                 MaxBoost = 30.0,
@@ -136,7 +136,7 @@ namespace NeoCortexApiSample
 
             var lastPredictedValues = new List<string>(new string[] { "0" });
 
-            int maxCycles = 300;
+            int maxCycles = 2500;
 
             //
             // Training SP to get stable. New-born stage.
@@ -275,7 +275,7 @@ namespace NeoCortexApiSample
                     if (accuracy >= maxPossibleAccuraccy)
                     {
                         maxMatchCnt++;
-                        Console.WriteLine($"100% accuracy reched {maxMatchCnt} times.");
+                        Console.WriteLine($"100% accuracy reached {maxMatchCnt} times.");
 
                         //
                         // Experiment is completed if we are 30 cycles long at the 100% accuracy.

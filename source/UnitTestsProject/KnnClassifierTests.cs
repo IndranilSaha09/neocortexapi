@@ -10,151 +10,108 @@ using NeoCortexEntities.NeuroVisualizer;
 namespace UnitTestsProject
 {
     [TestClass]
-    public class KnnClassifierTests
+    public class KNeighborsClassifierTests
     {
-        private int numColumns = 1024;
-        private int cellsPerColumn = 25;
-        private KNeighborsClassifier<string, ComputeCycle> knnClassifier;
-        private Dictionary<string, List<double>> sequences;
-        private List<Cell> lastActiveCells = new List<Cell>();
-
-        [TestInitialize]
-        public void Setup()
+        [Test]
+        public void Learn_AddsSequenceToModel()
         {
-            knnClassifier = new KNeighborsClassifier<string, ComputeCycle>();
-            sequences = new Dictionary<string, List<double>>();
-            sequences.Add("S1", new List<double>(new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 2.0, 5.0 }));
+            // Arrange
+            var classifier = new KNeighborsClassifier<Dictionary<string, object>, string>();
+            var input = new Dictionary<string, object>();
+            var cells = new[] { new Cell(5), new Cell(10), new Cell(15), new Cell(20), new Cell(25) };
 
-            LearnknnClassifier();
+            // Act
+            classifier.Learn(input, cells);
+
+            // Assert
+            Assert.AreEqual(1, classifier.GetModelsCount());
+            // Add more assertions as needed
         }
 
-        /// <summary>
-        /// Here our target is to whether we are getting any predicted value for input we have given one sequence s1
-        /// and check from this sequence each input, will we get prediction or not.
-        /// </summary>
-        [DataTestMethod]
-        [DataRow(0)]
-        [DataRow(1)]
-        [TestCategory("Prod")]
-        [TestMethod]
-        public void CheckNextValueIsNotEmpty(int input)
+        [Test]
+        public void GetPredictedInputValues_ReturnsPredictedValues()
         {
-            var predictiveCells = getMockCells(CellActivity.PredictiveCell);
-            var res = knnClassifier.GetPredictedInputValues(predictiveCells.ToArray(), 3);
+            // Arrange
+            var classifier = new KNeighborsClassifier<Dictionary<string, object>, string>();
+            var unclassifiedCells = new[] { new Cell(8), new Cell(12), new Cell(18), new Cell(22), new Cell(27) };
+            classifier.Learn(new Dictionary<string, object>(), new[] { new Cell(5), new Cell(10), new Cell(15), new Cell(20), new Cell(25) });
 
-            var tokens = res.First().PredictedInput.Split('_');
-            var tokens2 = res.First().PredictedInput.Split('-');
-            Debug.WriteLine($"->{tokens2[tokens.Length - 1]}");
-            var predictValue = Convert.ToInt32(tokens2[tokens.Length - 1]);
-            //Assert.IsTrue(predictValue > 0, $"{predictValue} is not > 0");
+            // Act
+            var results = classifier.GetPredictedInputValues(unclassifiedCells);
+
+            // Assert
+            Assert.AreEqual(1, results.Count);
+            // Add more assertions as needed
         }
 
-        /// <summary>
-        /// Here we are checking if cell count is zero will we get any kind of exception.
-        /// </summary>
-        [TestMethod]
-        [TestCategory("Prod")]
-        public void NoExceptionIfCellsCountIsZero()
+        [Test]
+        public void SetNumberOfNeighbors_ChangesNumberOfNeighbors()
         {
-            var cells = new Cell[] { };
-            var res = knnClassifier.GetPredictedInputValues(cells, 3);
-            Assert.AreEqual(res.Count, 0, $"{res.Count} != 0");
+            // Arrange
+            var classifier = new KNeighborsClassifier<Dictionary<string, object>, string>();
+            var initialNeighbors = classifier.GetNumberOfNeighbors();
+
+            // Act
+            classifier.SetNumberOfNeighbors(5);
+
+            // Assert
+            Assert.AreEqual(5, classifier.GetNumberOfNeighbors());
+            Assert.AreNotEqual(initialNeighbors, classifier.GetNumberOfNeighbors());
         }
 
-
-        /// <summary>
-        /// Check how many prediction results will be retrieved.
-        /// </summary>
-        [DataTestMethod]
-        [TestCategory("Prod")]
-        [DataRow(3)]
-        [DataRow(4)]
-        [TestMethod]
-        public void CheckHowManyOfGetPredictedInputValues(int howMany)
+        [Test]
+        public void SetSDRS_ChangesSDRSValue()
         {
-            var predictiveCells = getMockCells(CellActivity.PredictiveCell);
+            // Arrange
+            var classifier = new KNeighborsClassifier<Dictionary<string, object>, string>();
+            var initialSDRS = classifier.GetSDRS();
 
-            var res = knnClassifier.GetPredictedInputValues(predictiveCells.ToArray(), Convert.ToInt16(howMany));
+            // Act
+            classifier.SetSDRS(30);
 
-            Assert.IsTrue(res.Count == howMany, $"{res.Count} != {howMany}");
+            // Assert
+            Assert.AreEqual(30, classifier.GetSDRS());
+            Assert.AreNotEqual(initialSDRS, classifier.GetSDRS());
         }
 
-        private void LearnknnClassifier()
+        [Test]
+        public void ClearState_RemovesAllModels()
         {
-            int maxCycles = 60;
+            // Arrange
+            var classifier = new KNeighborsClassifier<Dictionary<string, object>, string>();
+            classifier.Learn(new Dictionary<string, object>(), new[] { new Cell(5), new Cell(10), new Cell(15), new Cell(20), new Cell(25) });
 
-            foreach (var sequenceKeyPair in sequences)
-            {
-                int maxPrevInputs = sequenceKeyPair.Value.Count - 1;
+            // Act
+            classifier.ClearState();
 
-                List<string> previousInputs = new List<string>();
+            // Assert
+            Assert.AreEqual(0, classifier.GetModelsCount());
+            // Add more assertions as needed
+        }
+    }
 
-                previousInputs.Add("-1.0");
+    [TestFixture]
+    public class KNeighborsClassifierInnerTests
+    {
+        [Test]
+        public void Learn_WithMaximumSDRS_RemovesOldestSequence()
+        {
+            // Arrange
+            var classifier = new KNeighborsClassifier<Dictionary<string, object>, string>();
+            classifier.SetSDRS(3);
 
-                // Now training with SP+TM. SP is pretrained on the given input pattern set.
-                for (int i = 0; i < maxCycles; i++)
-                {
-                    foreach (var input in sequenceKeyPair.Value)
-                    {
-                        previousInputs.Add(input.ToString());
-                        if (previousInputs.Count > maxPrevInputs + 1)
-                            previousInputs.RemoveAt(0);
+            // Act
+            classifier.Learn(new Dictionary<string, object>(), new[] { new Cell(5), new Cell(10), new Cell(15), new Cell(20), new Cell(25) });
+            classifier.Learn(new Dictionary<string, object>(), new[] { new Cell(30), new Cell(35), new Cell(40), new Cell(45), new Cell(50) });
+            classifier.Learn(new Dictionary<string, object>(), new[] { new Cell(55), new Cell(60), new Cell(65), new Cell(70), new Cell(75) });
+            classifier.Learn(new Dictionary<string, object>(), new[] { new Cell(80), new Cell(85), new Cell(90), new Cell(95), new Cell(100) });
 
-                        /* In the pretrained SP with HPC, the TM will quickly learn cells for patterns
-                        In that case the starting sequence 4-5-6 might have the sam SDR as 1-2-3-4-5-6,
-                        Which will result in returning of 4-5-6 instead of 1-2-3-4-5-6.
-                        knnClassifier allways return the first matching sequence. Because 4-5-6 will be as first
-                        memorized, it will match as the first one. */
-                        if (previousInputs.Count < maxPrevInputs)
-                            continue;
-
-                        string key = GetKey(previousInputs, input, sequenceKeyPair.Key);
-                        List<Cell> actCells = getMockCells(CellActivity.ActiveCell);
-                        knnClassifier.Learn(key, actCells.ToArray());
-                    }
-                }
-            }
+            // Assert
+            Assert.AreEqual(3, classifier.GetModelsCount());
+            Assert.IsFalse(classifier.HasModelWithSequence(new[] { 5, 10, 15, 20, 25 }));
+            // Add more assertions as needed
         }
 
-        /// <summary>
-        /// Mock the cells data that we get from the Temporal Memory
-        /// </summary>
-        private List<Cell> getMockCells(CellActivity cellActivity)
-        {
-            var cells = new List<Cell>();
-            for (int k = 0; k < Random.Shared.Next(5, 20); k++)
-            {
-                int parentColumnIndx = Random.Shared.Next(0, numColumns);
-                int numCellsPerColumn = Random.Shared.Next(0, cellsPerColumn);
-                int colSeq = Random.Shared.Next(0, cellsPerColumn);
-
-                cells.Add(new Cell(parentColumnIndx, colSeq, numCellsPerColumn, cellActivity));
-            }
-
-            if (cellActivity == CellActivity.ActiveCell)
-                lastActiveCells = cells;
-
-            else if (cellActivity == CellActivity.PredictiveCell)
-                /* Append one of the cell from lastActiveCells to the randomly generated predictive cells to have some
-                similarity */
-                cells.AddRange(lastActiveCells.GetRange(Random.Shared.Next(lastActiveCells.Count), 1));
-
-            return cells;
-        }
-
-        private string GetKey(List<string> prevInputs, double input, string sequence)
-        {
-            string key = string.Empty;
-
-            for (int i = 0; i < prevInputs.Count; i++)
-            {
-                if (i > 0)
-                    key += "-";
-
-                key += prevInputs[i];
-            }
-
-            return $"{sequence}_{key}";
-        }
+        // Add other tests in a similar manner
     }
 }

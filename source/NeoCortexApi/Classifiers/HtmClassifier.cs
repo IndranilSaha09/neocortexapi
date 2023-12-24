@@ -491,6 +491,9 @@ namespace NeoCortexApi.Classifiers
             return same.Count();
         }
 
-
+        internal void TraceSimilarities()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
