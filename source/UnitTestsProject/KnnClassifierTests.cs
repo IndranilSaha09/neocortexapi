@@ -3,98 +3,168 @@ using NeoCortexApi.Classifiers;
 using NeoCortexApi.Entities;
 using NeoCortexEntities.NeuroVisualizer;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace UnitTestsProject
 {
+    /// <summary>
+    /// Class containing tests for the K-nearest neighbors (KNN) classifier.
+    /// </summary>
     [TestClass]
-    public class KnnClassifierTests<TInput, TOutput>
+    public class KnnClassifierTests
     {
-        private Dictionary<string, List<int[]>> models;
-        private KNeighborsClassifier<int[], string> knnClassifier;
+        private KNeighborsClassifier<string, Cell> knnClassifier;
+        private Dictionary<string, List<double>> sequences; // Dictionary to hold input sequences
 
         [TestInitialize]
         public void Setup()
         {
-            models = new Dictionary<string, List<int[]>>();
-            knnClassifier = new KNeighborsClassifier<int[], string>();
+            knnClassifier = new KNeighborsClassifier<string, Cell>();
+            sequences = new Dictionary<string, List<double>>();
+            sequences.Add("S1", new List<double>(new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 2.0, 5.0 }));
+            LearnknnClassifier(); // Train the classifier on setup
         }
 
+        /// <summary>
+        /// Test ensuring the method returns an empty list when no models are available
+        /// </summary>
         [TestMethod]
-        public void GetPredictedInputValues_ReturnsEmptyList_WhenUnclassifiedCellsAreEmpty()
+        public void Test_GetPredictedInputValues_ReturnsEmptyList_WhenNoModelsAvailable()
         {
-            // Arrange
-            Cell[] unclassifiedCells = new Cell[] { };
+            // Arrange: Ensure that there are no models available by initializing without any training data
+            sequences.Clear();
 
-            // Act
-            var result = knnClassifier.GetPredictedInputValues(unclassifiedCells);
+            // Reinitialize the knnClassifier object after clearing sequences
+            knnClassifier = new KNeighborsClassifier<string, Cell>();
 
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Count);
-        }
-
-
-
-        [TestMethod]
-        public void GetPredictedInputValues_ReturnsEmptyList_WhenNoModelsAvailable()
-        {
-            // Arrange
+            // Act: Call the GetPredictedInputValues method with unclassified cells
             var unclassifiedCells = new Cell[]
             {
                 new Cell(0, 1, 0, CellActivity.ActiveCell),
                 new Cell(1, 2, 1, CellActivity.ActiveCell),
                 // Add more cells as needed for the unclassified sequence
             };
+            var result = knnClassifier.GetPredictedInputValues(unclassifiedCells, 1);
 
-            // Act
-            var result = knnClassifier.GetPredictedInputValues(unclassifiedCells, 3);
-
-            // Assert
+            // Assert: Check that the returned list is empty
             Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Count);
+            Assert.AreEqual(0, result.Count, "Expected an empty list when no models are available");
         }
 
         /// <summary>
-        /// Here we are checking if cell count is zero will we get any kind of exception.
+        /// Test ensuring no exceptions are thrown when the cells count is zero
         /// </summary>
         [TestMethod]
-        [TestCategory("Prod")]
         public void NoExceptionIfCellsCountIsZero()
         {
+            // Arrange: Create an empty array of cells
             var cells = new Cell[] { };
+
+            // Act: Call the GetPredictedInputValues method with zero cells
             var res = knnClassifier.GetPredictedInputValues(cells, 3);
+
+            // Assert: Check that the returned list count is zero
             Assert.AreEqual(res.Count, 0, $"{res.Count} != 0");
         }
 
+        /// <summary>
+        /// Test ensuring the correct number of predicted input values are returned
+        /// </summary>
         [TestMethod]
-        public void GetPredictedInputValues_ReturnsCorrectNumberOfPredictions()
+        public void CheckHowManyOfGetPredictedInputValues_ReturnsCorrectNumberOfPredictions()
         {
-            // Arrange
-            var unclassifiedCells = new Cell[]
+            // Arrange: Set the number of predictions expected
+            var howMany = 3;
+
+            // Generate mock cells based on predictive activity
+            var predictiveCells = getMockCells(CellActivity.PredictiveCell);
+
+            // Act: Call the GetPredictedInputValues method with predictive cells
+            var res = knnClassifier.GetPredictedInputValues(predictiveCells.ToArray(), (short)howMany);
+
+            // Assert: Check that the returned list has the expected count of predicted values
+            Assert.IsTrue(res.Count == howMany, $"{res.Count} != {howMany}");
+        }
+
+        /// <summary>
+        /// Trains the KNN classifier based on the sequences and previous inputs.
+        /// </summary>
+        private void LearnknnClassifier()
+        {
+            int maxCycles = 60;
+
+            foreach (var sequenceKeyPair in sequences)
             {
-                new Cell(0, 0, 0, CellActivity.ActiveCell),
-                new Cell(1, 1, 1, CellActivity.ActiveCell),
-                // Add more cells as needed for the unclassified sequence
-            };
+                int maxPrevInputs = sequenceKeyPair.Value.Count - 1;
+                List<string> previousInputs = new List<string>();
+                previousInputs.Add("-1.0");
 
-            // Learn some data to make predictions
-            var input = new int[] { 5, 10, 15, 20, 25 };
-            var cells = new Cell[]
+                for (int i = 0; i < maxCycles; i++)
+                {
+                    foreach (var input in sequenceKeyPair.Value)
+                    {
+                        previousInputs.Add(input.ToString());
+                        if (previousInputs.Count > maxPrevInputs + 1)
+                            previousInputs.RemoveAt(0);
+
+                        if (previousInputs.Count < maxPrevInputs)
+                            continue;
+
+                        string key = GetKey(previousInputs, input, sequenceKeyPair.Key);
+                        List<Cell> actCells = getMockCells(CellActivity.ActiveCell);
+                        knnClassifier.Learn(key, actCells.ToArray());
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Mock the cells data that we get from the Temporal Memory
+        /// </summary>
+        private List<Cell> getMockCells(CellActivity activity)
+        {
+            List<Cell> mockCells = new List<Cell>();
+
+            // Generate mock cells based on the specified activity
+            // This is just an example - replace this with your logic to create mock cells
+            switch (activity)
             {
-                new Cell(0, 0, 0, CellActivity.ActiveCell),
-                new Cell(1, 1, 1, CellActivity.ActiveCell),
-                // Add more cells as needed for the input sequence
-            };
-            knnClassifier.Learn(input, cells);
+                case CellActivity.ActiveCell:
+                    // Generate mock active cells
+                    for (int i = 0; i < 5; i++)
+                    {
+                        // Add cells with some properties based on the activity
+                        Cell cell = new Cell(i, i + 1, i + 2, CellActivity.ActiveCell);
+                        mockCells.Add(cell);
+                    }
+                    break;
+                case CellActivity.PredictiveCell:
+                    // Generate mock predictive cells
+                    for (int i = 0; i < 3; i++)
+                    {
+                        // Add cells with some properties based on the activity
+                        Cell cell = new Cell(i, i + 1, i + 2, CellActivity.PredictiveCell);
+                        mockCells.Add(cell);
+                    }
+                    break;
+                // Handle other CellActivity types if needed
+                default:
+                    // Default behavior if CellActivity is not recognized
+                    break;
+            }
 
-            // Act
-            var numberOfPredictions = 3; // Number of predictions expected
-            var result = knnClassifier.GetPredictedInputValues(unclassifiedCells, (short)numberOfPredictions);
+            return mockCells;
+        }
 
-            // Assert
-            // Check if the expected count of predicted values is returned
-            Assert.AreEqual(numberOfPredictions, result.Count);
+        /// <summary>
+        /// Generates a key based on the inputs and sequenceKey.
+        /// </summary>
+        private string GetKey(List<string> previousInputs, double input, string sequenceKey)
+        {
+            // Generate a key based on the inputs and sequenceKey
+            // This is just an example - replace this with your actual key generation logic
+            string key = $"{string.Join("-", previousInputs)}-{input}-{sequenceKey}";
+
+            return key;
         }
 
     }
