@@ -65,20 +65,35 @@ Order the classifications based on the similarity scores:
 [12, 22, 27, 8, 18] (descending order of calculated scores)
 This sequence indicates the predictions in descending order of their similarity scores.
 This demonstrates how distances, weighted votes, and similarity scores are calculated and utilized to determine the best classifications for the unclassified points based on their proximity to the classified points.
+<<<<<<< HEAD
 
+=======
+>>>>>>> 51401fdcc356e32208a43c35a8752916b4b4c35c
  */
 
 namespace NeoCortexApi.Classifiers
 {
 
     /// <summary>
+<<<<<<< HEAD
     /// Extends the foreach method to provide a default value of type TValue when a key is absent in the dictionary.
+=======
+    /// Extends the foreach method to give out an item and index of type IEnumerable.
+>>>>>>> 51401fdcc356e32208a43c35a8752916b4b4c35c
     /// </summary>
     public class DefaultDictionary<TKey, TValue> : Dictionary<TKey, TValue> where TValue : new()
     {
         /// <summary>
+<<<<<<< HEAD
         /// Retrieves the default value of type TValue for the specified key.
         /// If the key is not present, adds the key with the default value to the dictionary.
+=======
+        /// Returns the default value of the declared type.
+        /// i.e var sample = DefaultDictionary[string, int]()
+        /// >>> sample['A']
+        /// >>> 0
+        /// </summary>
+>>>>>>> 51401fdcc356e32208a43c35a8752916b4b4c35c
         /// <typeparam name="TKey">A key of Generic type.</typeparam>
         /// <typeparam name="TValue">A newly created value of Generic type.</typeparam>
         public new TValue this[TKey key]
@@ -98,7 +113,11 @@ namespace NeoCortexApi.Classifiers
     }
 
     /// <summary>
+<<<<<<< HEAD
     /// Represents a pair of Classification and Distance for comparison as container.
+=======
+    /// A generic container class
+>>>>>>> 51401fdcc356e32208a43c35a8752916b4b4c35c
     /// </summary>
     public class ClassificationAndDistance : IComparable<ClassificationAndDistance>
     {
@@ -126,7 +145,12 @@ namespace NeoCortexApi.Classifiers
 
 
         /// <summary>
+<<<<<<< HEAD
         /// Compares two ClassificationAndDistance instances based on their distance values.
+=======
+        /// Implementation of the Method for sorting the given generic object.
+        /// </summary>
+>>>>>>> 51401fdcc356e32208a43c35a8752916b4b4c35c
         /// <param name="other">Past object of the implementation for comparison.</param>
         /// <returns>Comparison between past and present object.</returns>
         public int CompareTo(ClassificationAndDistance other)
@@ -153,7 +177,11 @@ namespace NeoCortexApi.Classifiers
 
 
     /// <summary>
+<<<<<<< HEAD
     /// Implementation of the K-nearest neighbors (KNN) classifier algorithm. 
+=======
+    /// Implementation of the KNN algorithm. 
+>>>>>>> 51401fdcc356e32208a43c35a8752916b4b4c35c
     /// </summary>
     public class KNeighborsClassifier<TIN, TOUT> : IClassifier<TIN, TOUT>
     {
@@ -382,7 +410,11 @@ namespace NeoCortexApi.Classifiers
             {
                 // Some logic to extract a string representation from the dictionary
                 // For example, concatenating dictionary keys or values
+<<<<<<< HEAD
                 return string.Join("_", dictionary.Keys); 
+=======
+                return string.Join("_", dictionary.Keys);
+>>>>>>> 51401fdcc356e32208a43c35a8752916b4b4c35c
             }
 
             // Return a default string representation if unable to process
