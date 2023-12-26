@@ -6,59 +6,55 @@ using System.Linq;
 
 /*
 
-- Suppose we have a KNN classifier with two models.
-- For this example, let's assume we're dealing with a small set of sequences and cells for simplicity:
+KNN Classifier Example of How it works:
+- Models: Two models used for classification.
+- Classified Sequence: [3, 7, 11, 15, 20]
+- Unclassified Sequence: [2, 6, 9, 13, 18]
 
-classifiedSequence: [3, 7, 11, 15, 20]
-unclassifiedSequence: [2, 6, 9, 13, 18]
-Now, let's apply the LeastValue method to compare each index in classifiedSequence against each index in unclassifiedSequence.
+Steps:
+1. **LeastValue Method:**
+   - For unclassifiedIdx = 2:
+     - Comparing 2 against each index in the classifiedSequence:
+       |3 - 2| = 1, |7 - 2| = 5, |11 - 2| = 9, |15 - 2| = 13, |20 - 2| = 18.
+       LeastValue(classifiedSequence, 2) = 1
 
-LeastValue Method:
-For unclassifiedIdx = 2:
+   - For unclassifiedIdx = 6:
+     - Comparing 6 against each index in the classifiedSequence:
+       |3 - 6| = 3, |7 - 6| = 1, |11 - 6| = 5, |15 - 6| = 9, |20 - 6| = 14.
+       LeastValue(classifiedSequence, 6) = 1
+       
+   - Similarly, compute LeastValue for unclassifiedIdx = 9, 13, and 18.
 
-Compare 2 against each index in classifiedSequence: |3 - 2| = 1, |7 - 2| = 5, |11 - 2| = 9, |15 - 2| = 13, |20 - 2| = 18.
-The smallest absolute difference is 1, so LeastValue(classifiedSequence, 2) returns 1.
-For unclassifiedIdx = 6:
+2. **GetDistanceTable Method:**
+   - Construct the distanceTable using the results from the LeastValue method:
+     - For unclassifiedIdx = 2, 6, 9, 13, 18, the shortest distances are 1 or 2.
 
-Compare 6 against each index in classifiedSequence: |3 - 6| = 3, |7 - 6| = 1, |11 - 6| = 5, |15 - 6| = 9, |20 - 6| = 14.
-The smallest absolute difference is 1, so LeastValue(classifiedSequence, 6) returns 1.
-Similarly, we can compute the results for unclassifiedIdx = 9, 13, and 18 using the LeastValue method.
+3. **Weighted Votes Calculation:**
+   - Compute weighted votes based on the inverse of distances:
+     - For index 2: 1 / 1 = 1
+     - For index 6: 1 / 1 = 1
+     - For index 9: 1 / 2 = 0.5
+     - For index 13: 1 / 2 = 0.5
+     - For index 18: 1 / 2 = 0.5
 
-GetDistanceTable Method:
-Now, let's construct the distanceTable using the results from the LeastValue method.
+4. **Overlaps Calculation:**
+   - No overlaps found as distances are not zero.
 
-For unclassifiedIdx = 2, the shortest distance is 1.
-For unclassifiedIdx = 6, the shortest distance is 1.
-For unclassifiedIdx = 9, the shortest distance is 2.
-For unclassifiedIdx = 13, the shortest distance is 2.
-For unclassifiedIdx = 18, the shortest distance is 2.
+5. **Similarity Scores Calculation:**
+   - No overlaps, so no calculations based on overlaps.
 
-Calculate weighted votes based on the inverse of distances:
+6. **Normalization of Weighted Votes:**
+   - Normalize the weighted votes and add them to similarity scores:
+     - For index 2: 1
+     - For index 6: 1
+     - For index 9: 0.5
+     - For index 13: 0.5
+     - For index 18: 0.5
 
-For index 2: 1 / 1 = 1
-For index 6: 1 / 1 = 1
-For index 9: 1 / 2 = 0.5
-For index 13: 1 / 2 = 0.5
-For index 18: 1 / 2 = 0.5
-Overlaps Calculation:
+7. **Final Decision:**
+   - Order the classifications based on the similarity scores:
+     [2, 6, 9, 13, 18] (descending order of calculated scores)
 
-Identify overlaps when distances are 0:
-There are no overlaps in this scenario.
-Similarity Scores Calculation:
-
-Compute similarity scores (based on overlaps, but in this example, there are none).
-Normalization of Weighted Votes:
-
-Normalize the weighted votes and add them to similarity scores.
-For index 2: 1
-For index 6: 1
-For index 9: 0.5
-For index 13: 0.5
-For index 18: 0.5
-Final Decision:
-
-Order the classifications based on the similarity scores:
-[2, 6, 9, 13, 18] (descending order of calculated scores)
 This sequence indicates the predictions in descending order of their similarity scores.
 This demonstrates how distances, weighted votes, and similarity scores are calculated and utilized to determine the best classifications for the unclassified points based on their proximity to the classified points.
 
