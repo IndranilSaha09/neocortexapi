@@ -91,18 +91,26 @@ namespace NeoCortexApiSample
             predictor.Reset();
             PredictNextElement(predictor, list3);
         }
+
+
+        /// <summary>
+        /// Initiates a multi-sequence learning experiment with image data.
+        /// </summary>
         private static void RunMultiSequenceLearningExperimentWithImage()
         {
+            // Get the current directory and search for the target directory
             string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string targetDirectoryName = "NeoCortexApiSample"; // Target directory name
 
             string targetDirectory = currentDirectory;
 
+            // Loop to find the target directory based on its name
             while (targetDirectory != null && !targetDirectory.EndsWith(targetDirectoryName))
             {
                 targetDirectory = Directory.GetParent(targetDirectory)?.FullName;
             }
 
+            // Check if the target directory exists
             if (targetDirectory != null)
             {
                 Console.WriteLine("Target Directory Found: " + targetDirectory);
@@ -115,26 +123,29 @@ namespace NeoCortexApiSample
             string folderName = "input_image"; // Folder name containing the images
             string folderPath = Path.Combine(targetDirectory, folderName);
 
-
             Console.WriteLine("Folder Path: " + folderPath);
 
+            // Check if the folder exists
             if (!Directory.Exists(folderPath))
             {
                 Console.WriteLine("Folder not found: " + folderPath);
                 return;
             }
 
+            // List to store pixel sequences
             List<double[]> pixelSequences = new List<double[]>();
 
+            // Get image files from the specified folder path
             string[] imageFiles = Directory.GetFiles(folderPath, "*.jpg");
 
+            // Convert images to pixel sequences and store them in the list
             foreach (string imagePath in imageFiles)
             {
                 List<double> pixelSequence = ConvertImageToSequence(imagePath);
                 pixelSequences.Add(pixelSequence.ToArray());
             }
 
-            // Print the pixel values for each image
+            // Print the pixel values for each image sequence
             foreach (var sequence in pixelSequences)
             {
                 Console.WriteLine("Sequence:");
@@ -145,22 +156,26 @@ namespace NeoCortexApiSample
                 Console.WriteLine();
             }
 
+            // Create a new instance of MultiSequenceLearning
             MultiSequenceLearning experiment = new MultiSequenceLearning();
-            // Convert the list of arrays to a dictionary or other structure expected by the Run method
+
+            // Convert the list of arrays to a dictionary structure expected by the Run method
             Dictionary<string, List<double>> sequences = new Dictionary<string, List<double>>();
             for (int i = 0; i < pixelSequences.Count; i++)
             {
                 sequences.Add($"Sequence_{i + 1}", pixelSequences[i].ToList());
             }
 
+            // Run the experiment using the sequences
             var predictor = experiment.Run(sequences);
             predictor.Reset();
         }
 
-
-
-
-
+        /// <summary>
+        /// Converts an image to a grayscale pixel sequence.
+        /// </summary>
+        /// <param name="imagePath">The file path of the image to be converted.</param>
+        /// <returns>A list of double values representing the grayscale pixel sequence.</returns>
         private static List<double> ConvertImageToSequence(string imagePath)
         {
             List<double> pixelSequence = new List<double>();
