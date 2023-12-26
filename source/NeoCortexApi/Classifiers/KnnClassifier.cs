@@ -150,8 +150,8 @@ namespace NeoCortexApi.Classifiers
     public class KNeighborsClassifier<TIN, TOUT> : IClassifier<TIN, TOUT>
     {
         private Dictionary<string, List<int[]>> models = new Dictionary<string, List<int[]>>();
-        private int numberOfNeighbors = 2;
-        private int sdrs = 20;
+        private int numberOfNeighbors = 3;
+        private int sdrs = 10;
 
         public int SetNumberOfNeighbors(int k)
         {
@@ -241,6 +241,34 @@ namespace NeoCortexApi.Classifiers
                     }
                 }
             }
+            // For Testing the models by printing
+/*            Console.WriteLine("Models:");
+            foreach (var model in models)
+            {
+                Console.WriteLine($"Model: {model.Key}");
+                foreach (var sequence in model.Value)
+                {
+                    Console.WriteLine($"Sequence: {sequence}");
+                }
+            }
+
+            foreach (var model in models)
+            {
+                foreach (var sequence in model.Value)
+                {
+                    var distanceTable = GetDistanceTable(sequence, unclassifiedSequences);
+                    Console.WriteLine($"Distance table for {sequence}:");
+                    foreach (var kvp in distanceTable)
+                    {
+                        Console.WriteLine($"Key: {kvp.Key}");
+                        foreach (var classificationDistance in kvp.Value)
+                        {
+                            Console.WriteLine($"Classification: {classificationDistance.Classification}, Distance: {classificationDistance.Distance}");
+                        }
+                    }
+                }
+            }*/
+
 
             foreach (var mappings in mappedElements)
                 mappings.Value.Sort(); // Sort values according to distance
@@ -305,7 +333,7 @@ namespace NeoCortexApi.Classifiers
         /// <param name="howMany">Number of best results to select.</param>
         /// <param name="numberOfNeighbors">Number of neighbors to consider for similarity calculation.</param>
         /// <returns>A list of ClassifierResult objects representing the predicted input values.</returns>
-        private List<ClassifierResult<TIN>> SelectBestClassification(Dictionary<int, List<ClassificationAndDistance>> mapping, int howMany, int numberOfNeighbors)
+        public List<ClassifierResult<TIN>> SelectBestClassification(Dictionary<int, List<ClassificationAndDistance>> mapping, int howMany, int numberOfNeighbors)
         {
             var weightedVotes = new Dictionary<string, double>(); // Use double for weighted votes
             var overlaps = new Dictionary<string, int>();

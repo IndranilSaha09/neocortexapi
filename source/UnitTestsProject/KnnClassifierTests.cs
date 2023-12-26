@@ -2,6 +2,7 @@
 using NeoCortexApi.Classifiers;
 using NeoCortexApi.Entities;
 using NeoCortexEntities.NeuroVisualizer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -171,6 +172,8 @@ namespace UnitTestsProject
             Assert.AreEqual(2, result.Count, "Expected 2 predictions");
         }
 
+
+
         /// <summary>
         /// Test ensuring the KNN classifier is initialized correctly with default values.
         /// </summary>
@@ -206,6 +209,28 @@ namespace UnitTestsProject
 
 
         /// <summary>
+        /// Test method to verify that SelectBestClassification returns an empty list when the mapping is empty.
+        /// </summary>
+        [TestMethod]
+        public void SelectBestClassification_ReturnsEmptyList_WhenMappingIsEmpty()
+        {
+            // Arrange
+            var classifier = new KNeighborsClassifier<string, Cell>();
+            var mapping = new Dictionary<int, List<ClassificationAndDistance>>();
+            int howMany = 5;
+            int numberOfNeighbors = 3;
+
+            // Act
+            var result = classifier.SelectBestClassification(mapping, howMany, numberOfNeighbors);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count);
+        }
+
+
+
+        /// <summary>
         /// Trains the KNN classifier based on the sequences and previous inputs.
         /// </summary>
         private void LearnknnClassifier()
@@ -236,6 +261,7 @@ namespace UnitTestsProject
                 }
             }
         }
+
 
         /// <summary>
         /// Mock the cells data that we get from the Temporal Memory
