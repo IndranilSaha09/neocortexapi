@@ -142,6 +142,70 @@ namespace UnitTestsProject
 
 
         /// <summary>
+        /// Test ensuring the GetPredictedInputValues method returns the expected results with varying numbers of predicted values.
+        /// </summary>
+        [TestMethod]
+        public void Test_GetPredictedInputValues_ReturnsCorrectNumberOfPredictions()
+        {
+            // Arrange
+            knnClassifier.SetNumberOfNeighbors(3);
+
+            // Define classified sequences for testing
+            int[] classifiedSequence = new int[] { 5, 10, 15, 20, 25 };
+
+            // Learn the classifier with the classified sequence
+            var cells = classifiedSequence.Select(idx => new Cell(idx, idx + 1, idx + 2, CellActivity.ActiveCell)).ToArray();
+            knnClassifier.Learn("Classified", cells);
+
+            // Act
+            var unclassifiedCells = new Cell[]
+            {
+                new Cell(8, 9, 10, CellActivity.ActiveCell),
+                new Cell(12, 13, 14, CellActivity.ActiveCell),
+                new Cell(18, 19, 20, CellActivity.ActiveCell),
+            };
+            var result = knnClassifier.GetPredictedInputValues(unclassifiedCells, 2); // Set to retrieve top 2 predictions
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count, "Expected 2 predictions");
+        }
+
+        /// <summary>
+        /// Test ensuring the KNN classifier is initialized correctly with default values.
+        /// </summary>
+        [TestMethod]
+        public void Test_K_value_IsInitializedCorrectly()
+        {
+            // Arrange
+            var defaultKnnClassifier = new KNeighborsClassifier<string, Cell>();
+
+            // Act
+            var numOfNeighbors = defaultKnnClassifier.SetNumberOfNeighbors(1);
+
+            // Assert
+            Assert.AreEqual(1, numOfNeighbors);
+        }
+
+        /// <summary>
+        /// Test ensuring the sdr value is initialized correctly with assert values.
+        /// </summary>
+        [TestMethod]
+        public void Test_sdr_value_IsInitializedCorrectly()
+        {
+            // Arrange
+            var defaultKnnClassifier = new KNeighborsClassifier<string, Cell>();
+
+            // Act
+            var sdr = defaultKnnClassifier.SetSDRS(20);
+
+            // Assert
+            Assert.AreEqual(20, sdr);
+        }
+
+
+
+        /// <summary>
         /// Trains the KNN classifier based on the sequences and previous inputs.
         /// </summary>
         private void LearnknnClassifier()

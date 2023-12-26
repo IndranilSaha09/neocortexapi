@@ -153,14 +153,16 @@ namespace NeoCortexApi.Classifiers
         private int numberOfNeighbors = 2;
         private int sdrs = 20;
 
-        public void SetNumberOfNeighbors(int k)
+        public int SetNumberOfNeighbors(int k)
         {
             numberOfNeighbors = k;
+            return numberOfNeighbors;
         }
 
-        public void SetSDRS(int s)
+        public int SetSDRS(int s)
         {
             sdrs = s;
+            return sdrs;
         }
 
 
