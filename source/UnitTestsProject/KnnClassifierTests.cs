@@ -3,6 +3,7 @@ using NeoCortexApi.Classifiers;
 using NeoCortexApi.Entities;
 using NeoCortexEntities.NeuroVisualizer;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UnitTestsProject
 {
@@ -84,6 +85,61 @@ namespace UnitTestsProject
             // Assert: Check that the returned list has the expected count of predicted values
             Assert.IsTrue(res.Count == howMany, $"{res.Count} != {howMany}");
         }
+
+
+        /// <summary>
+        /// Tests whether the GetPredictedInputValues method returns the expected results.
+        /// </summary>
+        [TestMethod]
+        public void Test_GetPredictedInputValues_ReturnsExpectedResults_1()
+        {
+            // Arrange
+            knnClassifier.SetNumberOfNeighbors(3);
+
+            // Define classified and unclassified sequences for testing
+            int[] classifiedSequence = new int[] { 5, 10, 15, 20, 25 };
+            int[] unclassifiedSequence = new int[] { 8, 12, 18, 22, 27 };
+
+            // Learn the classifier with the classified sequence
+            var cells = classifiedSequence.Select(idx => new Cell(idx, idx + 1, idx + 2, CellActivity.ActiveCell)).ToArray();
+            knnClassifier.Learn("Classified", cells);
+
+            // Act
+            var unclassifiedCells = unclassifiedSequence.Select(idx => new Cell(idx, idx + 1, idx + 2, CellActivity.ActiveCell)).ToArray();
+            var result = knnClassifier.GetPredictedInputValues(unclassifiedCells, 5); // Set to retrieve top 5 predictions
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(5, result.Count, "Expected 5 predictions");
+        }
+
+
+        /// <summary>
+        /// Tests whether the GetPredictedInputValues method returns the expected results using LearnknnClassifier method.
+        /// </summary>
+        [TestMethod]
+        public void Test_GetPredictedInputValues_ReturnsExpectedResults_2()
+        {
+            // Arrange
+            knnClassifier.SetNumberOfNeighbors(3);
+
+            // Learn the classifier using LearnknnClassifier method
+            LearnknnClassifier();
+
+            // Define unclassified sequences for testing
+            int[] unclassifiedSequence = new int[] { 8, 12, 18, 22, 27 };
+
+            // Act
+            var unclassifiedCells = unclassifiedSequence
+                .Select(idx => new Cell(idx, idx + 1, idx + 2, CellActivity.ActiveCell))
+                .ToArray();
+            var result = knnClassifier.GetPredictedInputValues(unclassifiedCells, 5); // Set to retrieve top 5 predictions
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(5, result.Count, "Expected 5 predictions");
+        }
+
 
         /// <summary>
         /// Trains the KNN classifier based on the sequences and previous inputs.
