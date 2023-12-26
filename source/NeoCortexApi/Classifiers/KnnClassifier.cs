@@ -9,41 +9,37 @@ using System.Linq;
 - Suppose we have a KNN classifier with two models.
 - For this example, let's assume we're dealing with a small set of sequences and cells for simplicity:
 
-Example Scenario:
-Classified Sequence: [5, 10, 15, 20, 25]
-Unclassified Sequence: [8, 12, 18, 22, 27]
-Steps:
-Calculating Distances:
+classifiedSequence: [3, 7, 11, 15, 20]
+unclassifiedSequence: [2, 6, 9, 13, 18]
+Now, let's apply the LeastValue method to compare each index in classifiedSequence against each index in unclassifiedSequence.
 
-Compute distances between each point in the unclassified sequence and the classified sequence.
-The distances are:
-[3, 2, 3, 2, 2] (computed using Math.Abs(classifiedIdx - unclassifiedIdx))
-Constructing Distance Table:
+LeastValue Method:
+For unclassifiedIdx = 2:
 
-The Distance Table could look like this:
-{
-  8: [3],
-  12: [2],
-  18: [3],
-  22: [2],
-  27: [2]
-}
-Weighted Votes Calculation:
+Compare 2 against each index in classifiedSequence: |3 - 2| = 1, |7 - 2| = 5, |11 - 2| = 9, |15 - 2| = 13, |20 - 2| = 18.
+The smallest absolute difference is 1, so LeastValue(classifiedSequence, 2) returns 1.
+For unclassifiedIdx = 6:
 
-For each unclassified index, select the top neighbors (let's assume numberOfNeighbors = 3 for this example):
+Compare 6 against each index in classifiedSequence: |3 - 6| = 3, |7 - 6| = 1, |11 - 6| = 5, |15 - 6| = 9, |20 - 6| = 14.
+The smallest absolute difference is 1, so LeastValue(classifiedSequence, 6) returns 1.
+Similarly, we can compute the results for unclassifiedIdx = 9, 13, and 18 using the LeastValue method.
 
-For index 8: [3]
-For index 12: [2]
-For index 18: [3]
-For index 22: [2]
-For index 27: [2]
+GetDistanceTable Method:
+Now, let's construct the distanceTable using the results from the LeastValue method.
+
+For unclassifiedIdx = 2, the shortest distance is 1.
+For unclassifiedIdx = 6, the shortest distance is 1.
+For unclassifiedIdx = 9, the shortest distance is 2.
+For unclassifiedIdx = 13, the shortest distance is 2.
+For unclassifiedIdx = 18, the shortest distance is 2.
+
 Calculate weighted votes based on the inverse of distances:
 
-For index 8: 1 / 3 = 0.33
-For index 12: 1 / 2 = 0.5
-For index 18: 1 / 3 = 0.33
-For index 22: 1 / 2 = 0.5
-For index 27: 1 / 2 = 0.5
+For index 2: 1 / 1 = 1
+For index 6: 1 / 1 = 1
+For index 9: 1 / 2 = 0.5
+For index 13: 1 / 2 = 0.5
+For index 18: 1 / 2 = 0.5
 Overlaps Calculation:
 
 Identify overlaps when distances are 0:
@@ -54,15 +50,15 @@ Compute similarity scores (based on overlaps, but in this example, there are non
 Normalization of Weighted Votes:
 
 Normalize the weighted votes and add them to similarity scores.
-For index 8: 0.33
-For index 12: 0.5
-For index 18: 0.33
-For index 22: 0.5
-For index 27: 0.5
+For index 2: 1
+For index 6: 1
+For index 9: 0.5
+For index 13: 0.5
+For index 18: 0.5
 Final Decision:
 
 Order the classifications based on the similarity scores:
-[12, 22, 27, 8, 18] (descending order of calculated scores)
+[2, 6, 9, 13, 18] (descending order of calculated scores)
 This sequence indicates the predictions in descending order of their similarity scores.
 This demonstrates how distances, weighted votes, and similarity scores are calculated and utilized to determine the best classifications for the unclassified points based on their proximity to the classified points.
 
