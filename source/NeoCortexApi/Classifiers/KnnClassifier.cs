@@ -665,7 +665,7 @@ namespace NeoCortexApi.Classifiers
             return results.Take(howMany).ToList();
         }
 
-        // <summary>
+        /// <summary>
         /// Normalizes the weights into probabilities across classes using the Softmax function.
         /// </summary>
         /// <param name="weights">Dictionary containing weights associated with different classes.</param>
