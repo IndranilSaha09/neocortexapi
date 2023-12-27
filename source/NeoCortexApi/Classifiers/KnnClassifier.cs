@@ -142,16 +142,11 @@ namespace NeoCortexApi.Classifiers
         /// </summary>
         public int Distance { get; private set; }
 
-        /// <summary>
-        /// Storing the SDR number under the classification. 
-        /// </summary>
-        //public int ClassificationNo { get; private set; }
 
         public ClassificationAndDistance(string classification, int distance)
         {
             Classification = classification;
             Distance = distance;
-            //ClassificationNo = classificationNo;
         }
 
 
@@ -287,7 +282,7 @@ namespace NeoCortexApi.Classifiers
 
             var unclassifiedSequences = unclassifiedCells.Select(cell => cell.Index).ToArray();
             var mappedElements = new DefaultDictionary<int, List<ClassificationAndDistance>>();
-            int neighbors = Math.Min(numberOfNeighbors, models.Values.Sum(x => x.Count)); // Adjust neighbors based on available models
+            int neighbors = Math.Min(numberOfNeighbors, models.Values.Sum(x => x.Count));
 
             foreach (var model in models)
             {
@@ -306,40 +301,12 @@ namespace NeoCortexApi.Classifiers
                         {
                             int distanceAsInt = classificationDistance.Distance; // Use the distance value
                             string classificationKey = model.Key; // Use the model key as classificationKey
-                            mappedElements[kvp.Key].Add(new ClassificationAndDistance(classificationKey, distanceAsInt)); // Pass the correct arguments
+                            mappedElements[kvp.Key].Add(new ClassificationAndDistance(classificationKey, distanceAsInt));
                         }
                     }
                 }
             }
-            // For Testing the models by printing
-            /*            Console.WriteLine("Models:");
-                        foreach (var model in models)
-                        {
-                            Console.WriteLine($"Model: {model.Key}");
-                            foreach (var sequence in model.Value)
-                            {
-                                Console.WriteLine($"Sequence: {sequence}");
-                            }
-                        }
-
-                        foreach (var model in models)
-                        {
-                            foreach (var sequence in model.Value)
-                            {
-                                var distanceTable = GetDistanceTable(sequence, unclassifiedSequences);
-                                Console.WriteLine($"Distance table for {sequence}:");
-                                foreach (var kvp in distanceTable)
-                                {
-                                    Console.WriteLine($"Key: {kvp.Key}");
-                                    foreach (var classificationDistance in kvp.Value)
-                                    {
-                                        Console.WriteLine($"Classification: {classificationDistance.Classification}, Distance: {classificationDistance.Distance}");
-                                    }
-                                }
-                            }
-                        }*/
-
-
+          
             foreach (var mappings in mappedElements)
                 mappings.Value.Sort(); // Sort values according to distance
 
@@ -441,11 +408,6 @@ namespace NeoCortexApi.Classifiers
             // Convert input arrays to HashSet for faster intersection operations
             var classifiedSet = new HashSet<int>(classifiedSequence);
 
-
-            // Print the Classified and Unclassified Sets for visualization
-            //Console.WriteLine("Classified Set: " + string.Join(", ", classifiedSet));
-            //Console.WriteLine("Unclassified Set: " + string.Join(", ", unclassifiedSet));
-
             // Compute cosine similarity and generate distance table for each unclassified index
             foreach (var unclassifiedIdx in unclassifiedSequence.Distinct())
             {
@@ -459,24 +421,10 @@ namespace NeoCortexApi.Classifiers
                 // Calculate cosine similarity between classified and unclassified sets
                 double cosineSimilarity = ComputeCosineSimilarity(classifiedSet, unclassifiedSet);
 
-                // Print computed cosine similarity value
-                //Console.WriteLine("Cosine Similarity: " + cosineSimilarity);
-
                 // Convert cosine similarity to a distance metric and add to the distance table
                 int distance = (int)((1 - cosineSimilarity) * 100); // Assuming cosine similarity is in range [0, 1]
                 distanceTable[unclassifiedIdx].Add(new ClassificationAndDistance("Classification", distance));
             }
-
-            // Display the generated distance table
-            /*            Console.WriteLine("Distance Table:");
-                        foreach (var kvp in distanceTable)
-                        {
-                            Console.WriteLine($"Key: {kvp.Key}");
-                            foreach (var classificationDistance in kvp.Value)
-                            {
-                                Console.WriteLine($"Classification: {classificationDistance.Classification}, Distance: {classificationDistance.Distance}");
-                            }
-                        }*/
 
             return distanceTable;
         }
@@ -564,7 +512,6 @@ namespace NeoCortexApi.Classifiers
         /// </summary>
         /// <param name="input">The input object from which classification is generated.</param>
         /// <returns>A string representing the classification derived from the input.</returns>
-        // Example logic to generate a classification from a Dictionary (you may customize this)
         private string GetClassificationFromDictionary(TIN input)
         {
             // Assuming input is a Dictionary<string, object> for demonstration purposes
@@ -659,7 +606,7 @@ namespace NeoCortexApi.Classifiers
             {
                 PredictedInput = kv.Key,
                 Similarity = kv.Value, // Using softmax probability as similarity score
-                                       // NumOfSameBits - Consider updating this based on the new approach
+                                       
             }).ToList();
 
             return results.Take(howMany).ToList();
