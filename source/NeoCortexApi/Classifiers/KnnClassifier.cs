@@ -619,16 +619,25 @@ namespace NeoCortexApi.Classifiers
         /// <returns>Dictionary with Softmax-normalized probabilities for each class.</returns>
         private Dictionary<TIN, double> Softmax(Dictionary<TIN, double> weights)
         {
-            // Find the maximum weight for normalization
+            // Find the maximum weight for numerical stability
             var maxWeight = weights.Values.Max();
+
             // Calculate the exponential sum of weights
             var expSum = weights.Values.Sum(w => Math.Exp(w - maxWeight));
 
             // Normalize weights into probabilities using Softmax formula
-            var softmaxProbabilities = weights.ToDictionary(kv => kv.Key, kv => Math.Exp(kv.Value - maxWeight) / expSum);
+            var softmaxProbabilities = new Dictionary<TIN, double>();
+
+            foreach (var kvp in weights)
+            {
+                double expWeight = Math.Exp(kvp.Value - maxWeight);
+                double probability = expWeight / expSum;
+                softmaxProbabilities[kvp.Key] = probability;
+            }
 
             return softmaxProbabilities;
         }
+
 
         /// <summary>
         /// Computes Softmax-like weights based on distances and classifies them.
