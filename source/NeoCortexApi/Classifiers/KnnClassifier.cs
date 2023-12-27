@@ -525,12 +525,14 @@ namespace NeoCortexApi.Classifiers
             }
 
             // Normalize the weighted votes before combining with overlap scores
-            var maxWeightedVote = weightedVotes.Max(v => v.Value);
-            foreach (var vote in weightedVotes)
+            if (weightedVotes.Any())
             {
-                weightedVotes[vote.Key] = vote.Value / maxWeightedVote; // Normalize votes to balance contribution
+                var maxWeightedVote = weightedVotes.Max(v => v.Value);
+                foreach (var vote in weightedVotes)
+                {
+                    weightedVotes[vote.Key] = vote.Value / maxWeightedVote; // Normalize votes to balance contribution
+                }
             }
-
             // Calculate similarity scores based on overlaps
             foreach (var overlap in overlaps)
             {
