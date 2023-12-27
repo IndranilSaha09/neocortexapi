@@ -312,32 +312,32 @@ namespace NeoCortexApi.Classifiers
                 }
             }
             // For Testing the models by printing
-/*            Console.WriteLine("Models:");
-            foreach (var model in models)
-            {
-                Console.WriteLine($"Model: {model.Key}");
-                foreach (var sequence in model.Value)
-                {
-                    Console.WriteLine($"Sequence: {sequence}");
-                }
-            }
-
-            foreach (var model in models)
-            {
-                foreach (var sequence in model.Value)
-                {
-                    var distanceTable = GetDistanceTable(sequence, unclassifiedSequences);
-                    Console.WriteLine($"Distance table for {sequence}:");
-                    foreach (var kvp in distanceTable)
-                    {
-                        Console.WriteLine($"Key: {kvp.Key}");
-                        foreach (var classificationDistance in kvp.Value)
+            /*            Console.WriteLine("Models:");
+                        foreach (var model in models)
                         {
-                            Console.WriteLine($"Classification: {classificationDistance.Classification}, Distance: {classificationDistance.Distance}");
+                            Console.WriteLine($"Model: {model.Key}");
+                            foreach (var sequence in model.Value)
+                            {
+                                Console.WriteLine($"Sequence: {sequence}");
+                            }
                         }
-                    }
-                }
-            }*/
+
+                        foreach (var model in models)
+                        {
+                            foreach (var sequence in model.Value)
+                            {
+                                var distanceTable = GetDistanceTable(sequence, unclassifiedSequences);
+                                Console.WriteLine($"Distance table for {sequence}:");
+                                foreach (var kvp in distanceTable)
+                                {
+                                    Console.WriteLine($"Key: {kvp.Key}");
+                                    foreach (var classificationDistance in kvp.Value)
+                                    {
+                                        Console.WriteLine($"Classification: {classificationDistance.Classification}, Distance: {classificationDistance.Distance}");
+                                    }
+                                }
+                            }
+                        }*/
 
 
             foreach (var mappings in mappedElements)
@@ -468,15 +468,15 @@ namespace NeoCortexApi.Classifiers
             }
 
             // Display the generated distance table
-/*            Console.WriteLine("Distance Table:");
-            foreach (var kvp in distanceTable)
-            {
-                Console.WriteLine($"Key: {kvp.Key}");
-                foreach (var classificationDistance in kvp.Value)
-                {
-                    Console.WriteLine($"Classification: {classificationDistance.Classification}, Distance: {classificationDistance.Distance}");
-                }
-            }*/
+            /*            Console.WriteLine("Distance Table:");
+                        foreach (var kvp in distanceTable)
+                        {
+                            Console.WriteLine($"Key: {kvp.Key}");
+                            foreach (var classificationDistance in kvp.Value)
+                            {
+                                Console.WriteLine($"Classification: {classificationDistance.Classification}, Distance: {classificationDistance.Distance}");
+                            }
+                        }*/
 
             return distanceTable;
         }
@@ -572,7 +572,7 @@ namespace NeoCortexApi.Classifiers
             {
                 // Some logic to extract a string representation from the dictionary
                 // For example, concatenating dictionary keys or values
-                return string.Join("_", dictionary.Keys); 
+                return string.Join("_", dictionary.Keys);
             }
 
             // Return a default string representation if unable to process
