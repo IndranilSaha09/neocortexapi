@@ -58,6 +58,44 @@ Steps:
 This sequence indicates the predictions in descending order of their similarity scores.
 This demonstrates how distances, weighted votes, and similarity scores are calculated and utilized to determine the best classifications for the unclassified points based on their proximity to the classified points.
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Lets breakdown how cosine similarity works for this algorithm
+
+1. Vector Representation:
+
+Consider the Classified Set and Unclassified Set as vectors in a high-dimensional space.
+Each index present in the set represents a non-zero value in the corresponding vector.
+Classified Set: [1857, 1862, 2126, ... , 4629, 4954]
+Unclassified Set: [1857, 2141, 2212, ... , 4617, 4954]
+
+2. Cosine Similarity Computation:
+
+Calculate the cosine similarity between the two vectors (sets) using the formula:
+cosine_similarity = dot_product(A, B) / (||A|| * ||B||)
+Dot Product: Calculate the dot product of the Classified Set and Unclassified Set.
+Vector Length: Compute the lengths (magnitudes) of the Classified and Unclassified Sets.
+
+3. Understanding Cosine Similarity:
+
+The cosine similarity ranges from 0 to 1, where:
+1 implies perfect similarity (identical vectors).
+0 indicates no similarity (orthogonal or completely different vectors).
+Consistently computed cosine similarity of 0.8104408984731079 implies a high degree of similarity between the two sets.
+
+4. Deriving Distance from Similarity:
+
+Distance is derived from similarity using the formula: Distance = (1 - Cosine Similarity) * 100.
+This distance measure ranges from 0 to 100:
+0 implies perfect similarity.
+100 indicates no similarity.
+
+5. Distance Table Representation:
+
+The distance table shows calculated distances between corresponding elements (keys) of the Classified and Unclassified Sets.
+For example, the distance for the first entry (Key: 1857) is displayed as 18.
+Since the cosine similarity remains consistent for all keys, the calculated distances for each key pair are also the same (18 in this case).
+
  */
 
 namespace NeoCortexApi.Classifiers
@@ -167,61 +205,69 @@ namespace NeoCortexApi.Classifiers
 
 
         /// <summary>
-        /// Learns and updates the K-nearest neighbors (KNN) classifier with new input and associated cells.
+        /// Learn method to update the models with a new input and associated cell indices.
         /// </summary>
-        /// <param name="input">The input data for learning.</param>
+        /// <param name="input">The input value for the model.</param>
         /// <param name="cells">Array of cells associated with the input.</param>
         public void Learn(TIN input, Cell[] cells)
         {
-            // Generate a classification string based on the input
+            // Retrieve the classification corresponding to the input
             var classification = GetClassificationFromDictionary(input);
 
-            // Print the classfication
-            //Console.WriteLine("Classification: " + classification);
+            // Convert the cell indices into an integer array
+            var cellIndices = cells.Select(idx => idx.Index).ToArray();
 
-            // Extract indices from the cells array and convert them into an integer array
-            int[] cellIndices = cells.Select(idx => idx.Index).ToArray();
-            
-            // Print the cell indices
-            //Console.WriteLine("Cell Indices: " + string.Join(", ", cellIndices));
-            
-            // If the models dictionary does not contain the classification as a key, add it
-            if (!models.ContainsKey(classification))
+            // Update the models based on the classification and cell indices
+            UpdateModels(classification, cellIndices);
+        }
+
+        /// <summary>
+        /// UpdateModels method adds new cell indices to the corresponding classification in the models dictionary.
+        /// </summary>
+        /// <param name="classification">The classification label.</param>
+        /// <param name="cellIndices">Array of cell indices.</param>
+        private void UpdateModels(string classification, int[] cellIndices)
+        {
+            // If the models dictionary does not contain the classification, create a new list
+            if (!models.TryGetValue(classification, out var sequences))
             {
-                models[classification] = new List<int[]>();
+                sequences = new List<int[]>();
+                models[classification] = sequences;
             }
 
-            // If the sequence of cell indices doesn't exist in the current classification model
-            if (!models[classification].Exists(seq => Enumerable.SequenceEqual(seq, cellIndices)))
+            // If the sequence doesn't exist in the classification model, add it
+            if (!SequenceExists(sequences, cellIndices))
             {
-                // If the count of sequences in the current classification model exceeds the specified value
-                if (models[classification].Count > sdrs)
-                {
-                    // Remove the oldest sequence from the classification model
-                    models[classification].RemoveAt(0);
-                }
+                // Remove the oldest sequence if the count exceeds the specified limit
+                RemoveOldestIfExceedsLimit(sequences);
 
-                // Add the new cell indices sequence to the current classification model
-                models[classification].Add(cellIndices);
+                // Add the new cell indices sequence to the classification model
+                sequences.Add(cellIndices);
             }
+        }
 
-/*          Example Representation of models Dictionary:
-          
-            classification = "S1_2-5-10-1-2-3-4"
-            cellIndices = [2029, 3138, 3168, ..., 4850, 5068]*/
+        /// <summary>
+        /// SequenceExists method checks if a target sequence exists in the provided list of sequences.
+        /// </summary>
+        /// <param name="sequences">List of integer arrays representing sequences.</param>
+        /// <param name="targetSequence">Target sequence to check for existence.</param>
+        /// <returns>True if the target sequence exists, otherwise False.</returns>
+        private bool SequenceExists(List<int[]> sequences, int[] targetSequence)
+        {
+            return sequences.Any(seq => Enumerable.SequenceEqual(seq, targetSequence));
+        }
 
-            // Print the final content of the models dictionary
-            foreach (var entry in models)
+        /// <summary>
+        /// RemoveOldestIfExceedsLimit method checks the count of sequences and removes the oldest sequence if it exceeds the specified limit.
+        /// </summary>
+        /// <param name="sequences">List of integer arrays representing sequences.</param>
+        private void RemoveOldestIfExceedsLimit(List<int[]> sequences)
+        {
+            // If the count of sequences exceeds the specified limit, remove the oldest sequence
+            if (sequences.Count > sdrs)
             {
-                Console.WriteLine($"Classification: {entry.Key}");
-                Console.WriteLine("Cell Indices:");
-                foreach (var sequence in entry.Value)
-                {
-                    Console.WriteLine(string.Join(", ", sequence));
-                }
-                Console.WriteLine("--------------------------------------");
+                sequences.RemoveAt(0); // Remove the oldest sequence
             }
-
         }
 
 
@@ -247,7 +293,7 @@ namespace NeoCortexApi.Classifiers
             {
                 foreach (var sequence in model.Value)
                 {
-                    var distanceTable = GetDistanceTable(sequence, unclassifiedSequences);
+                    var distanceTable = GetDistanceTableforCosine(sequence, unclassifiedSequences);
 
                     foreach (var kvp in distanceTable)
                     {
@@ -350,6 +396,96 @@ namespace NeoCortexApi.Classifiers
         }
 
 
+        //--------------------------------------------------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// Computes the cosine similarity between two sets.
+        /// </summary>
+        /// <param name="classifiedSet">A HashSet representing the classified set of indices.</param>
+        /// <param name="unclassifiedSet">A HashSet representing the unclassified set of indices.</param>
+        /// <returns>The cosine similarity between the classified and unclassified sets.</returns>
+        private double ComputeCosineSimilarity(HashSet<int> classifiedSet, HashSet<int> unclassifiedSet)
+        {
+            // Calculate the dot product between the classified and unclassified sets
+            var dotProduct = classifiedSet.Intersect(unclassifiedSet).Count();
+
+            // Calculate the lengths of the classified and unclassified sets
+            var classifiedLength = classifiedSet.Count;
+            var unclassifiedLength = unclassifiedSet.Count;
+
+            // Check for edge cases where either of the sets has zero length to avoid division by zero
+            if (classifiedLength == 0 || unclassifiedLength == 0)
+            {
+                return 0.0; // Return 0 if any of the lengths is zero to avoid division by zero
+            }
+
+            // Compute the cosine similarity using the dot product and lengths of the sets
+            var cosineSimilarity = dotProduct / (Math.Sqrt(classifiedLength) * Math.Sqrt(unclassifiedLength));
+            return cosineSimilarity;
+        }
+
+
+
+
+        /// <summary>
+        /// Computes the cosine similarity between a classified sequence and an unclassified sequence and generates a distance table.
+        /// </summary>
+        /// <param name="classifiedSequence">Array representing the classified sequence.</param>
+        /// <param name="unclassifiedSequence">Array representing the unclassified sequence.</param>
+        /// <returns>A dictionary containing the distance table for the unclassified sequence.</returns>
+        private Dictionary<int, List<ClassificationAndDistance>> GetDistanceTableforCosine(int[] classifiedSequence, int[] unclassifiedSequence)
+        {
+            // Create an empty distance table to store classification distances for each unclassified index
+            var distanceTable = new Dictionary<int, List<ClassificationAndDistance>>();
+
+            // Convert input arrays to HashSet for faster intersection operations
+            var classifiedSet = new HashSet<int>(classifiedSequence);
+
+
+            // Print the Classified and Unclassified Sets for visualization
+            //Console.WriteLine("Classified Set: " + string.Join(", ", classifiedSet));
+            //Console.WriteLine("Unclassified Set: " + string.Join(", ", unclassifiedSet));
+
+            // Compute cosine similarity and generate distance table for each unclassified index
+            foreach (var unclassifiedIdx in unclassifiedSequence.Distinct())
+            {
+                var unclassifiedSet = new HashSet<int>(unclassifiedSequence);
+                // Create an entry in the distance table if it doesn't exist for the unclassified index
+                if (!distanceTable.ContainsKey(unclassifiedIdx))
+                {
+                    distanceTable[unclassifiedIdx] = new List<ClassificationAndDistance>();
+                }
+
+                // Calculate cosine similarity between classified and unclassified sets
+                double cosineSimilarity = ComputeCosineSimilarity(classifiedSet, unclassifiedSet);
+
+                // Print computed cosine similarity value
+                //Console.WriteLine("Cosine Similarity: " + cosineSimilarity);
+
+                // Convert cosine similarity to a distance metric and add to the distance table
+                int distance = (int)((1 - cosineSimilarity) * 100); // Assuming cosine similarity is in range [0, 1]
+                distanceTable[unclassifiedIdx].Add(new ClassificationAndDistance("Classification", distance));
+            }
+
+            // Display the generated distance table
+/*            Console.WriteLine("Distance Table:");
+            foreach (var kvp in distanceTable)
+            {
+                Console.WriteLine($"Key: {kvp.Key}");
+                foreach (var classificationDistance in kvp.Value)
+                {
+                    Console.WriteLine($"Classification: {classificationDistance.Classification}, Distance: {classificationDistance.Distance}");
+                }
+            }*/
+
+            return distanceTable;
+        }
+
+
+
+        //--------------------------------------------------------------------------------------------------------------------------------------------------//
+
+
         /// <summary>
         /// Selects the best classification results based on similarity scores and weighted votes.
         /// </summary>
@@ -388,16 +524,23 @@ namespace NeoCortexApi.Classifiers
                 }
             }
 
+            // Normalize the weighted votes before combining with overlap scores
+            var maxWeightedVote = weightedVotes.Max(v => v.Value);
+            foreach (var vote in weightedVotes)
+            {
+                weightedVotes[vote.Key] = vote.Value / maxWeightedVote; // Normalize votes to balance contribution
+            }
+
             // Calculate similarity scores based on overlaps
             foreach (var overlap in overlaps)
             {
                 similarityScores[overlap.Key] = overlap.Value != 0 ? (double)overlap.Value / mapping.Count : 0;
             }
 
-            // Normalize the weighted votes to a similarity score for each class
+            // Combine normalized weighted votes with overlap scores
             foreach (var vote in weightedVotes)
             {
-                similarityScores[vote.Key] += vote.Value; // Add weighted votes to similarity score
+                similarityScores[vote.Key] += vote.Value; // Add normalized weighted votes to similarity score
             }
 
             // Order by similarity scores to make the final decision
@@ -412,6 +555,7 @@ namespace NeoCortexApi.Classifiers
 
             return result.Take(howMany).ToList();
         }
+
 
         /// <summary>
         /// Generates a classification string from the input object.
