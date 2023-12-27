@@ -230,6 +230,15 @@ namespace NeoCortexApiSample
                             actCells = lyrOut.WinnerCells;
                         }
 
+                        // Print key and actCells.ToArray()
+/*                        Console.WriteLine($"Key: {key}");
+                        Console.WriteLine("Active Cells:");
+                        foreach (var cell in actCells)
+                        {
+                            // Assuming Cell has some properties to print
+                            Console.WriteLine(cell.ToString());
+                        }*/
+
                         cls.Learn(key, actCells.ToArray());
 
                         Console.WriteLine($"Col  SDR: {Helpers.StringifyVector(lyrOut.ActivColumnIndicies)}");
