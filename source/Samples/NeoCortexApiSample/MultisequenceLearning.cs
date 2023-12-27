@@ -258,7 +258,7 @@ namespace NeoCortexApiSample
                         if (lyrOut.PredictiveCells.Count > 0)
                         {
                             //var predictedInputValue = cls.GetPredictedInputValue(lyrOut.PredictiveCells.ToArray());
-                            var predictedInputValues = cls.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 3);
+                            var predictedInputValues = cls.PredictWithSoftmax(lyrOut.PredictiveCells.ToArray(), 3);
 
                             foreach (var item in predictedInputValues)
                             {

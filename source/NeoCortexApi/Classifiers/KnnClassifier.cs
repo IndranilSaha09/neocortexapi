@@ -588,5 +588,145 @@ namespace NeoCortexApi.Classifiers
         {
             models.Clear();
         }
+
+
+
+        //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //--------------------------------------CLASSIFY KNN USING SOFTMAX ALGORITHM USING COSINE SIMILARITY DISTANCE METRICS-----------------------------------------------------------
+
+
+        /// <summary>
+        /// Predicts the classification using K-nearest neighbors (KNN) distances and applies Softmax normalization to obtain probabilities.
+        /// </summary>
+        /// <param name="unclassifiedCells">Array of unclassified cells to predict their classifications.</param>
+        /// <param name="howMany">Number of predicted classifications to return (default is 1).</param>
+        /// <returns>List of ClassifierResult objects representing the predicted classifications with Softmax probabilities.</returns>
+        public List<ClassifierResult<TIN>> PredictWithSoftmax(Cell[] unclassifiedCells, short howMany = 1)
+        {
+            // If there are no unclassified cells, return an empty list
+            if (unclassifiedCells.Length == 0)
+                return new List<ClassifierResult<TIN>>();
+
+            // Extract indices of unclassified cells
+            var unclassifiedSequences = unclassifiedCells.Select(cell => cell.Index).ToArray();
+            // Create a dictionary to store distances and classifications
+            var mappedElements = new DefaultDictionary<int, List<ClassificationAndDistance>>();
+            // Determine the number of neighbors based on available models
+            int neighbors = Math.Min(numberOfNeighbors, models.Values.Sum(x => x.Count));
+
+            // Populate mapped elements with distances and classifications
+            foreach (var model in models)
+            {
+                foreach (var sequence in model.Value)
+                {
+                    var distanceTable = GetDistanceTableforCosine(sequence, unclassifiedSequences);
+
+                    foreach (var kvp in distanceTable)
+                    {
+                        if (!mappedElements.ContainsKey(kvp.Key))
+                        {
+                            mappedElements[kvp.Key] = new List<ClassificationAndDistance>();
+                        }
+
+                        foreach (var classificationDistance in kvp.Value)
+                        {
+                            int distanceAsInt = classificationDistance.Distance;
+                            string classificationKey = model.Key;
+                            mappedElements[kvp.Key].Add(new ClassificationAndDistance(classificationKey, distanceAsInt));
+                        }
+                    }
+                }
+            }
+
+            // Sort values according to distance
+            foreach (var mappings in mappedElements)
+            {
+                mappings.Value.Sort();
+            }
+
+            // Calculate softmax weights for each class based on distances
+            var softmaxWeights = CalculateSoftmaxWeights(mappedElements, 0.5);
+
+            // Get softmax probabilities from the softmax weights
+            var softmaxProbabilities = Softmax(softmaxWeights);
+
+            // Prepare results with softmax probabilities
+            var results = softmaxProbabilities.Select(kv => new ClassifierResult<TIN>
+            {
+                PredictedInput = kv.Key,
+                Similarity = kv.Value, // Using softmax probability as similarity score
+                                       // NumOfSameBits - Consider updating this based on the new approach
+            }).ToList();
+
+            return results.Take(howMany).ToList();
+        }
+
+        // <summary>
+        /// Normalizes the weights into probabilities across classes using the Softmax function.
+        /// </summary>
+        /// <param name="weights">Dictionary containing weights associated with different classes.</param>
+        /// <returns>Dictionary with Softmax-normalized probabilities for each class.</returns>
+        private Dictionary<TIN, double> Softmax(Dictionary<TIN, double> weights)
+        {
+            // Find the maximum weight for normalization
+            var maxWeight = weights.Values.Max();
+            // Calculate the exponential sum of weights
+            var expSum = weights.Values.Sum(w => Math.Exp(w - maxWeight));
+
+            // Normalize weights into probabilities using Softmax formula
+            var softmaxProbabilities = weights.ToDictionary(kv => kv.Key, kv => Math.Exp(kv.Value - maxWeight) / expSum);
+
+            return softmaxProbabilities;
+        }
+
+        /// <summary>
+        /// Computes Softmax-like weights based on distances and classifies them.
+        /// </summary>
+        /// <param name="distances">Dictionary containing distances between classes.</param>
+        /// <param name="softness">The softness parameter used in weight calculation.</param>
+        /// <returns>Dictionary with Softmax-like weights classified across classes.</returns>
+        private Dictionary<TIN, double> CalculateSoftmaxWeights(DefaultDictionary<int, List<ClassificationAndDistance>> distances, double softness)
+        {
+            var softmaxWeights = new Dictionary<TIN, double>();
+
+            foreach (var kvp in distances)
+            {
+                // Calculate the exponential values based on distances for each classification
+                var expValues = kvp.Value
+                    .GroupBy(classificationDistance => classificationDistance.Classification)
+                    .ToDictionary(
+                        group => group.Key,
+                        group => group.Sum(item => Math.Exp(-Convert.ToDouble(item.Distance) / softness))
+                    );
+
+                // Calculate the sum of exponential values
+                var expSum = expValues.Values.Sum();
+                // Find the maximum exponential value
+                var maxWeight = expValues.Values.Max();
+
+                foreach (var softmaxItem in expValues)
+                {
+                    TIN convertedKey = (TIN)Convert.ChangeType(softmaxItem.Key, typeof(TIN));
+
+                    // Calculate Softmax-like weights
+                    if (!softmaxWeights.ContainsKey(convertedKey))
+                    {
+                        softmaxWeights.Add(convertedKey, Math.Log(expSum) - Math.Log(softmaxItem.Value + Math.Exp(maxWeight - softness)));
+                    }
+                    else
+                    {
+                        softmaxWeights[convertedKey] += Math.Log(expSum) - Math.Log(softmaxItem.Value + Math.Exp(maxWeight - softness));
+                    }
+                }
+            }
+
+            return softmaxWeights;
+        }
+
+
     }
 }
