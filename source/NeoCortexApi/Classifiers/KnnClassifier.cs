@@ -199,6 +199,18 @@ namespace NeoCortexApi.Classifiers
                 // Add the new cell indices sequence to the current classification model
                 models[classification].Add(cellIndices);
             }
+            // Print the final content of the models dictionary
+            foreach (var entry in models)
+            {
+                Console.WriteLine($"Classification: {entry.Key}");
+                Console.WriteLine("Cell Indices:");
+                foreach (var sequence in entry.Value)
+                {
+                    Console.WriteLine(string.Join(", ", sequence));
+                }
+                Console.WriteLine("--------------------------------------");
+            }
+
         }
 
 
