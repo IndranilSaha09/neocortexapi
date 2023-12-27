@@ -175,10 +175,11 @@ namespace NeoCortexApi.Classifiers
         {
             // Generate a classification string based on the input
             var classification = GetClassificationFromDictionary(input);
-
+            //Console.WriteLine("Classification: " + classification);
             // Extract indices from the cells array and convert them into an integer array
             int[] cellIndices = cells.Select(idx => idx.Index).ToArray();
-
+            // Print the cell indices
+            //Console.WriteLine("Cell Indices: " + string.Join(", ", cellIndices));
             // If the models dictionary does not contain the classification as a key, add it
             if (!models.ContainsKey(classification))
             {
