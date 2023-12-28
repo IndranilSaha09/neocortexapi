@@ -364,5 +364,37 @@ namespace UnitTestsProject
             // Assert
             Assert.AreEqual(unclassifiedIdx, result, "The result should be unclassifiedIdx because the classifiedSequence is empty.");
         }
+
+        [TestMethod]
+        public void LeastValue_ShouldReturnZero_WhenClassifiedSequenceHasSingleElement()
+        {
+            var defaultclassifier = new KNeighborsClassifier<string, Cell>();
+
+            // Arrange
+            int[] classifiedSequence = { 3 };
+            int unclassifiedIdx = 3;
+
+            // Act
+            int result = defaultclassifier.LeastValue(classifiedSequence, unclassifiedIdx);
+
+            // Assert
+            Assert.AreEqual(0, result, "The result should be 0 because unclassifiedIdx is the only element in classifiedSequence.");
+        }
+
+        [TestMethod]
+        public void LeastValue_ShouldHandleNegativeValues()
+        {
+            var defaultclassifier = new KNeighborsClassifier<string, Cell>();
+
+            // Arrange
+            int[] classifiedSequence = { -5, -3, 0, 2, 4 };
+            int unclassifiedIdx = -2;
+
+            // Act
+            int result = defaultclassifier.LeastValue(classifiedSequence, unclassifiedIdx);
+
+            // Assert
+            Assert.AreEqual(-2, result, "The result should be the shortest distance, which is -2 in this case.");
+        }
     }
 }
