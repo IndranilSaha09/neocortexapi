@@ -313,6 +313,9 @@ namespace UnitTestsProject
             return key;
         }
 
+        /// <summary>
+        // Test case to ensure the method returns 0 when the unclassified index is in the classified sequence.
+        /// </summary>
         [TestMethod]
         public void LeastValue_ShouldReturnZero_WhenUnclassifiedIdxIsInClassifiedSequence()
         {
@@ -329,8 +332,10 @@ namespace UnitTestsProject
             Assert.AreEqual(0, result, "The result should be 0 because unclassifiedIdx is in the classifiedSequence.");
         }
 
+        /// <summary>
+        // Test case to ensure the method returns the shortest distance when the unclassified index is not in the classified sequence.
+        /// </summary>
         [TestMethod]
-        
         public void LeastValue_ShouldReturnShortestDistance_WhenUnclassifiedIdxIsNotInClassifiedSequence()
         {
             var defaultclassifier = new KNeighborsClassifier<string, Cell>();
@@ -346,10 +351,10 @@ namespace UnitTestsProject
             Assert.AreEqual(1, result, "The result should be the shortest distance, which is 1 in this case.");
         }
 
-
-
-        [TestMethod]
+        /// <summary>
         // Test case to ensure the method returns unclassifiedIdx when the classified sequence is empty.
+        /// </summary>
+        [TestMethod]
         public void LeastValue_ShouldReturnUnclassifiedIdx_WhenClassifiedSequenceIsEmpty()
         {
             var defaultclassifier = new KNeighborsClassifier<string, Cell>();
@@ -365,6 +370,9 @@ namespace UnitTestsProject
             Assert.AreEqual(unclassifiedIdx, result, "The result should be unclassifiedIdx because the classifiedSequence is empty.");
         }
 
+        /// <summary>
+        // Test case to ensure the method returns 0 when the classified sequence has a single element equal to the unclassified index.
+        /// </summary>
         [TestMethod]
         public void LeastValue_ShouldReturnZero_WhenClassifiedSequenceHasSingleElement()
         {
@@ -381,6 +389,9 @@ namespace UnitTestsProject
             Assert.AreEqual(0, result, "The result should be 0 because unclassifiedIdx is the only element in classifiedSequence.");
         }
 
+        /// <summary>
+        // Test case to ensure the method handles negative values correctly.
+        /// </summary>
         [TestMethod]
         public void LeastValue_ShouldHandleNegativeValues()
         {
