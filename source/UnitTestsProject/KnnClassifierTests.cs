@@ -313,5 +313,56 @@ namespace UnitTestsProject
             return key;
         }
 
+        [TestMethod]
+        public void LeastValue_ShouldReturnZero_WhenUnclassifiedIdxIsInClassifiedSequence()
+        {
+            var defaultclassifier = new KNeighborsClassifier<string, Cell>();
+
+            // Arrange
+            int[] classifiedSequence = { 1, 3, 5, 7, 9 };
+            int unclassifiedIdx = 3;
+
+            // Act
+            int result = defaultclassifier.LeastValue(classifiedSequence, unclassifiedIdx);
+
+            // Assert
+            Assert.AreEqual(0, result, "The result should be 0 because unclassifiedIdx is in the classifiedSequence.");
+        }
+
+        [TestMethod]
+        
+        public void LeastValue_ShouldReturnShortestDistance_WhenUnclassifiedIdxIsNotInClassifiedSequence()
+        {
+            var defaultclassifier = new KNeighborsClassifier<string, Cell>();
+
+            // Arrange
+            int[] classifiedSequence = { 1, 3, 5, 7, 9 };
+            int unclassifiedIdx = 4; // Not present in classifiedSequence
+
+            // Act
+            int result = defaultclassifier.LeastValue(classifiedSequence, unclassifiedIdx);
+
+            // Assert
+            Assert.AreEqual(1, result, "The result should be the shortest distance, which is 1 in this case.");
+        }
+
+
+
+        [TestMethod]
+        // Test case to ensure the method returns unclassifiedIdx when the classified sequence is empty.
+        public void LeastValue_ShouldReturnUnclassifiedIdx_WhenClassifiedSequenceIsEmpty()
+        {
+            var defaultclassifier = new KNeighborsClassifier<string, Cell>();
+
+            // Arrange
+            int[] classifiedSequence = { };
+            int unclassifiedIdx = 5;
+
+            // Act
+            int result = defaultclassifier.LeastValue(classifiedSequence, unclassifiedIdx);
+
+            // Assert
+            Assert.AreEqual(unclassifiedIdx, result, "The result should be unclassifiedIdx because the classifiedSequence is empty.");
+        }
     }
 }

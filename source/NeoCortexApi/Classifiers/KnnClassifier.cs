@@ -326,7 +326,7 @@ namespace NeoCortexApi.Classifiers
         /// <returns>
         /// Returns the smallest value of type int from the list.
         /// </returns>
-        private int LeastValue(int[] classifiedSequence, int unclassifiedIdx)
+        public int LeastValue(int[] classifiedSequence, int unclassifiedIdx)
         {
             int shortestDistance = unclassifiedIdx;
             foreach (var classifiedIdx in classifiedSequence)
