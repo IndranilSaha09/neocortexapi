@@ -13,7 +13,9 @@ Utilizes the `GetPredictedInputValues` method in conjunction with `SelectBestCla
 
 `LeastValue` and `ComputeCosineSimilarity`.
 
-#### Distance Table Methods: `GetDistanceTable` and `GetDistanceTableforCosine`
+#### Distance Table Methods: 
+
+`GetDistanceTable` and `GetDistanceTableforCosine`
 
 ### Approach 2: SoftMax Algorithm:
 Employs the `PredictWithSoftmax` method alongside `CalculateSoftmaxWeights`, representing a SoftMax algorithm.
