@@ -6,20 +6,20 @@ The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN)
 
 ## Features
 
-### Core Functionality
+### Core Functionality:
 
 - **Learn Method:** Adds new input values and associated cell indices to update the models.
 - **GetPredictedInputValues Method:** Predicts input values using KNN distances and similarity scores.
 - **ClearState Method:** Clears the stored models.
 
-### Softmax and Cosine Similarity
+### Softmax and Cosine Similarity:
 
 - **PredictWithSoftmax Method:** Predicts classifications using KNN distances and Softmax normalization for probabilities.
 - **ComputeCosineSimilarity Method:** Calculates cosine similarity between two sets of sequences.
 - **Softmax Method:** Normalizes weights into probabilities using the Softmax function.
 - **CalculateSoftmaxWeights Method:** Computes Softmax-like weights based on distances for classification.
 
-### Getting Started:
+## Getting Started:
 
 Go to the `Samples` folder which is one folder above and inside where a folder names NeoCortexApiSample is present.
 From there run the `Program.cs` file to run the KNN Classifier.
@@ -31,7 +31,7 @@ dotnet run --project "../Samples/NeoCortexApiSample/NeoCortexApiSample.csproj"
 Path to the
 Project: [KnnClassifier.cs](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs)
 
-### Testing
+## Testing
 
 The unit tests are written under the `UnitTestsProject` also one folder above, run the `KnnClassifierTests.cs` for the
 unittests.
