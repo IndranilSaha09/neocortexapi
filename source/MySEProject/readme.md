@@ -19,7 +19,25 @@ The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN)
 - **Softmax Method:** Normalizes weights into probabilities using the Softmax function.
 - **CalculateSoftmaxWeights Method:** Computes Softmax-like weights based on distances for classification.
 
-## Usage
+### Getting Started:
 
-### Learning and Prediction
+Go to the `Samples` folder which is one folder above and inside where a folder names NeoCortexApiSample is present.
+From there run the `Program.cs` file to run the KNN Classifier.
+
+```bash
+dotnet run --project "../Samples/NeoCortexApiSample/NeoCortexApiSample.csproj"
+```
+
+Path to the
+Project: [KnnClassifier.cs](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs)
+
+### Testing
+
+The unit tests are written under the `UnitTestsProject` also one folder above, run the `KnnClassifierTests.cs` for the
+unittests.
+
+Path to the Unit
+test: [KnnClassifierTests.cs](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/UnitTestsProject/KnnClassifierTests.cs)
+
+
 
