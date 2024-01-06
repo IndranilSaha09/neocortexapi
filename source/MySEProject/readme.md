@@ -6,15 +6,26 @@ The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN)
 
 ## Approaches of KNN Classifier:
 
-### Approach 1: Simple Weightage Algorithm
+## KNN Classifier Methods
 
-- Use `GetPredictedInputValues` with `SelectBestClassification`, a simple weightage algorithm.
-- Measure metrics: `LeastValue` or `ComputeCosineSimilarity`.
+### Approach 1: Simple Weightage Algorithm
+Utilizes the `GetPredictedInputValues` method in conjunction with `SelectBestClassification`, implementing a simple weightage algorithm.
+Measure metrics available: `LeastValue` and `ComputeCosineSimilarity`.
+
+#### Distance Table Methods
+- **LeastValue:** Computes the shortest difference between a single value and a sequence of values.
+- **ComputeCosineSimilarity:** Calculates cosine similarity between two sets.
 
 ### Approach 2: SoftMax Algorithm
+Employs the `PredictWithSoftmax` method alongside `CalculateSoftmaxWeights`, representing a SoftMax algorithm.
+Measure metric available: `ComputeCosineSimilarity`.
 
-- Use `PredictWithSoftmax` with `CalculateSoftmaxWeights`, a SoftMax algorithm.
-- Measure metric: `ComputeCosineSimilarity`.
+#### Distance Table Method
+- **GetDistanceTableforCosine:** Computes the cosine similarity between a classified sequence and an unclassified sequence, generating a distance table.
+
+#### Additional Method for Probability
+- **Softmax:** Normalizes weights into probabilities across classes using the Softmax function.
+
 
 ## Methods in Brief:
 
