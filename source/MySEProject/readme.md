@@ -18,11 +18,11 @@ The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN)
 
 ## Methods in Brief:
 
-### Learn Method
+### `Learn` Method
 
 The `Learn` method updates the models with new input and associated cell indices. It associates input values with cell indices in the models.
 
-### GetPredictedInputValues Method
+### `GetPredictedInputValues` Method
 
 Predicts input values by computing distances from sequences in multiple models. It selects the best classification based on distances and specified criteria.
 
