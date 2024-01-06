@@ -30,39 +30,39 @@ Employs the `PredictWithSoftmax` method alongside `CalculateSoftmaxWeights`, rep
 
 ## KNN Classifier Methods:
 
-#### `Learn` Method
+##### `Learn` Method
 
 The `Learn` method updates the models with new input and associated cell indices. It associates input values with cell indices in the models.
 
-#### `GetPredictedInputValues` Method
+##### `GetPredictedInputValues` Method
 
 Predicts input values by computing distances from sequences in multiple models. It selects the best classification based on distances and specified criteria.
 
-#### `LeastValue` Method
+##### `LeastValue` Method
 Finds the smallest difference between a single value and a sequence of values.
 
-#### `GetDistanceTable` Method
+##### `GetDistanceTable` Method
 Generates a dictionary mapping the unclassified sequence index to the shortest distance between classified and unclassified sequences.
 
-#### `ComputeCosineSimilarity` Method
+##### `ComputeCosineSimilarity` Method
 Calculates the cosine similarity between two sets (classified and unclassified).
 
-#### `GetDistanceTableforCosine` Method
+##### `GetDistanceTableforCosine` Method
 Computes the cosine similarity between a classified sequence and an unclassified sequence and generates a distance table.
 
-#### `SelectBestClassification` Method
+##### `SelectBestClassification` Method
 Selects the best classification results based on similarity scores and weighted votes.
 
-#### `GetPredictedInputValues` Method
+##### `GetPredictedInputValues` Method
 Predicts input values using K-nearest neighbors (KNN) distances and similarity scores.
 
-#### `PredictWithSoftmax` Method
+##### `PredictWithSoftmax` Method
 Predicts classification using K-nearest neighbors distances and applies Softmax normalization for probabilities.
 
-#### `Softmax` Method
+##### `Softmax` Method
 Normalizes weights into probabilities across classes using the Softmax function.
 
-#### `CalculateSoftmaxWeights` Method
+##### `CalculateSoftmaxWeights` Method
 Computes Softmax-like weights based on distances and classifies them.
 
 ## Getting Started:
