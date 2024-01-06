@@ -4,15 +4,7 @@
 
 The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN) algorithm that utilizes Softmax normalization and cosine similarity distance metrics. It provides functionality for classification tasks based on the proximity of unclassified sequences to classified sequences in high-dimensional space.
 
-## Features
-
-## Core Functionality:
-
-- **Learn Method:** Adds new input values and associated cell indices to update the models.
-- **GetPredictedInputValues Method:** Predicts input values using KNN distances and similarity scores.
-- **ClearState Method:** Clears the stored models.
-
-## Softmax and Cosine Similarity:
+## Approaches of KNN Classifier:
 
 ### Approach 1: Simple Weightage Algorithm
 
@@ -24,7 +16,7 @@ The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN)
 - Use `PredictWithSoftmax` with `CalculateSoftmaxWeights`, a SoftMax algorithm.
 - Measure metric: `ComputeCosineSimilarity`.
 
-## Methods in Detail:
+## Methods in Brief:
 
 ### Learn Method
 
@@ -34,28 +26,32 @@ The `Learn` method updates the models with new input and associated cell indices
 
 Predicts input values by computing distances from sequences in multiple models. It selects the best classification based on distances and specified criteria.
 
-### ClearState Method
+### `LeastValue` Method
+Finds the smallest difference between a single value and a sequence of values.
 
-Clears the stored models, allowing for a clean slate to update new models.
+### `GetDistanceTable` Method
+Generates a dictionary mapping the unclassified sequence index to the shortest distance between classified and unclassified sequences.
 
-### PredictWithSoftmax Method
+### `ComputeCosineSimilarity` Method
+Calculates the cosine similarity between two sets (classified and unclassified).
 
-Predicts classifications using KNN distances and Softmax normalization for probabilities. It applies Softmax to distances, converting them into probabilities for classification.
+### `GetDistanceTableforCosine` Method
+Computes the cosine similarity between a classified sequence and an unclassified sequence and generates a distance table.
 
-### ComputeCosineSimilarity Method
+### `SelectBestClassification` Method
+Selects the best classification results based on similarity scores and weighted votes.
 
-Calculates cosine similarity between two sets of sequences, providing a measure of similarity between them.
+### `GetPredictedInputValues` Method
+Predicts input values using K-nearest neighbors (KNN) distances and similarity scores.
 
-### Softmax Method
+### `PredictWithSoftmax` Method
+Predicts classification using K-nearest neighbors distances and applies Softmax normalization for probabilities.
 
-Normalizes weights into probabilities using the Softmax function, ensuring a proper probability distribution across classifications.
+### `Softmax` Method
+Normalizes weights into probabilities across classes using the Softmax function.
 
-### CalculateSoftmaxWeights Method
-
-Computes Softmax-like weights based on distances for classification. It employs Softmax to derive normalized weights associated with different classifications.
-
-This README outlines the core functionalities of the K-nearest neighbors (KNN) algorithm, particularly focusing on the methods for learning, prediction, and clearing state. Additionally, it highlights two different approaches - a Simple Weightage Algorithm and a SoftMax Algorithm - each with their suitable measure metrics.
-
+### `CalculateSoftmaxWeights` Method
+Computes Softmax-like weights based on distances and classifies them.
 
 ## Getting Started:
 
