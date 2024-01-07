@@ -87,11 +87,11 @@ test: [KnnClassifierTests.cs](https://github.com/IndranilSaha09/neocortexapi/blo
 
 ## Updated Files for Dependencies
 
-1. [Program.cs]https://github.com/IndranilSaha09/neocortexapi/blob/master/source/Samples/NeoCortexApiSample/Program.cs
-2. [IClassifier.cs]https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/IClassifier.cs
-3. [HTMUnionClassifier.cs]https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/HtmUnionClassifier.cs
-4. [SDRClassifier]https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/SDRClassifier.cs
-5. [Predictor.cs]https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Predictor.cs
+1. [Program.cs](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/Samples/NeoCortexApiSample/Program.cs)
+2. [IClassifier.cs](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/IClassifier.cs)
+3. [HTMUnionClassifier.cs](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/HtmUnionClassifier.cs)
+4. [SDRClassifier](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/SDRClassifier.cs)
+5. [Predictor.cs](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Predictor.cs)
 
 ## References
 
