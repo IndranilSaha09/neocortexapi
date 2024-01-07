@@ -20,6 +20,7 @@ The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN)
 | **Distance Table Method** | `GetDistanceTableforCosine` |
 | **Probability Method** | `Softmax` |
 
+
 ## Getting Started:
 
 Go to the `Samples` folder which is one folder above and inside where a folder names NeoCortexApiSample is present.
