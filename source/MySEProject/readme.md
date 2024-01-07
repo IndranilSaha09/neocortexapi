@@ -15,7 +15,7 @@ The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN)
 
 | **Approach 2: SoftMax Algorithm** |  |
 | --- | --- |
-| **Prediction and Weightage Methods** | `PredictWithSoftmax`, `CalculateSoftmaxWeights` |
+| **Prediction and Weightage Methods**       | `PredictWithSoftmax`, `CalculateSoftmaxWeights` |
 | **Metrics Available** | `ComputeCosineSimilarity` |
 | **Distance Table Method** | `GetDistanceTableforCosine` |
 | **Probability Method** | `Softmax` |
