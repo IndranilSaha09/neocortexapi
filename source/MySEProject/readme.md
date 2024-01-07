@@ -88,9 +88,13 @@ test: [KnnClassifierTests.cs](https://github.com/IndranilSaha09/neocortexapi/blo
 ## References
 
 1.https://github.com/UniversityOfAppliedSciencesFrankfurt/LearningApi/blob/f713a28984e8f3115952c54cd9d60d53faa76ffe/LearningApi/src/MLAlgorithms/AnomDetect.KMeans/KMeansAlgorithm.cs
+
 2.https://youtu.be/iUrqokeC7ec?si=q3d0T4R4YopnTfp7&t=614
+
 3.https://hopding.com/sdr-classifier
+
 4.https://discourse.numenta.org/t/how-the-sdr-classifier-works/1481/7
+
 5.https://www.youtube.com/watch?v=iUrqokeC7ec
 
 
