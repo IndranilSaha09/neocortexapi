@@ -4,6 +4,7 @@
 
 The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN) algorithm that utilizes Softmax normalization and cosine similarity distance metrics. It provides functionality for classification tasks based on the proximity of unclassified sequences to classified sequences in high-dimensional space.
 
+
 ## Example
 
 ### Vector Representation:
@@ -32,8 +33,6 @@ The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN)
 - Shows distances between corresponding elements (keys) of the Classified and Unclassified Sets.
 - For instance, the distance for the first entry (Key: 1857) is displayed as 18.
 - Since cosine similarity remains consistent, calculated distances for each key pair are also the same (18 in this case).
-
-## Softmax Algorithm and Weightage Mechanism:
 
 ### Softmax Algorithm:
 - Utilizes the Softmax method.
