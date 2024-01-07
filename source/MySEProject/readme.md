@@ -46,6 +46,7 @@ Based on probabilities:
 - Class 1 (Probability ≈ 0.1585) - Lowest weight.
 
 
+
 ## Approaches of KNN Classifier:
 
 | **Approach 1: Simple Weightage Algorithm** |  |
