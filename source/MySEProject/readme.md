@@ -2,7 +2,7 @@
 
 ## Implementation
 
-The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN) algorithm that is is designed and integrated with the Neocortex API and utilizes Softmax normalization and cosine similarity distance metrics. It provides functionality for classification tasks based on the proximity of unclassified sequences to classified sequences in high-dimensional space.
+The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN) algorithm that is designed and integrated with the Neocortex API. It provides functionality for classification tasks based on the proximity of unclassified sequences to classified sequences in high-dimensional space.
 
 
 ## Example
