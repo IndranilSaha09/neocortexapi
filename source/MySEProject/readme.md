@@ -1,6 +1,6 @@
 # Investigate and Implement KNN Classifier
 
-## Overview
+## Implementation
 
 The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN) algorithm that utilizes Softmax normalization and cosine similarity distance metrics. It provides functionality for classification tasks based on the proximity of unclassified sequences to classified sequences in high-dimensional space.
 
@@ -12,33 +12,33 @@ The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN)
 - **Cosine Similarity**: 0.8104
 - **Distance from Similarity**: 19
 
-### Cosine Similarity Calculation
+#### Cosine Similarity Calculation
 Cosine similarity measures the similarity between two non-zero vectors:
 
 Cosine Similarity = dot product(A, B) / (||A|| * ||B||)
 
 In this case, Cosine Similarity = 0.8104
 
-### Distance Table for Unclassified Element 1857
+#### Distance Table for Unclassified Element 1857
 - Class 1: Distance = 5
 - Class 2: Distance = 7
 - Class 3: Distance = 9
 
-### Softmax Weight Calculation
+#### Softmax Weight Calculation
 Using `CalculateSoftmaxWeights` method with softness parameter = 0.5:
 
 - Class 1: Weight ≈ -3.184
 - Class 2: Weight ≈ -2.884
 - Class 3: Weight ≈ -2.584
 
-### Softmax Normalization
+#### Softmax Normalization
 Applying Softmax method to weights:
 
 - Class 1: Probability ≈ 0.1585
 - Class 2: Probability ≈ 0.2900
 - Class 3: Probability ≈ 0.5515
 
-### Weightage Mechanism
+#### Weightage Mechanism
 Based on probabilities:
 
 - Class 3 (Probability ≈ 0.5515) - Highest weight.
