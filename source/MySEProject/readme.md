@@ -13,7 +13,7 @@ The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN)
 | **Metrics Available** | `LeastValue`, `ComputeCosineSimilarity` |
 | **Distance Table Methods** | `GetDistanceTable`, `GetDistanceTableforCosine` |
 
-| **Approach 2: SoftMax Algorithm** |  |
+| **Approach 2: SoftMax Algorithm        ** |  |
 | --- | --- |
 | **Prediction and Weightage Methods**       | `PredictWithSoftmax`, `CalculateSoftmaxWeights` |
 | **Metrics Available** | `ComputeCosineSimilarity` |
