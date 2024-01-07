@@ -85,6 +85,14 @@ Path to the Unit
 test: [KnnClassifierTests.cs](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/UnitTestsProject/KnnClassifierTests.cs)
 
 
+## Updated Files for Dependencies
+
+1. [Program.cs]https://github.com/IndranilSaha09/neocortexapi/blob/master/source/Samples/NeoCortexApiSample/Program.cs
+2. [IClassifier.cs]https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/IClassifier.cs
+3. [HTMUnionClassifier.cs]https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/HtmUnionClassifier.cs
+4. [SDRClassifier]https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/SDRClassifier.cs
+5. [Predictor.cs]https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Predictor.cs
+
 ## References
 
 1.https://github.com/UniversityOfAppliedSciencesFrankfurt/LearningApi/blob/f713a28984e8f3115952c54cd9d60d53faa76ffe/LearningApi/src/MLAlgorithms/AnomDetect.KMeans/KMeansAlgorithm.cs
