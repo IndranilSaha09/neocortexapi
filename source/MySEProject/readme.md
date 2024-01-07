@@ -28,6 +28,18 @@ Employs the `PredictWithSoftmax` method alongside `CalculateSoftmaxWeights`, rep
 #### Method for Probability: 
 `Softmax`
 
+| **Approach 1: Simple Weightage Algorithm** |  |
+| --- | --- |
+| **Utilized Methods** | `GetPredictedInputValues`, `SelectBestClassification` |
+| **Metrics Available** | `LeastValue`, `ComputeCosineSimilarity` |
+| **Distance Table Methods** | `GetDistanceTable`, `GetDistanceTableforCosine` |
+
+| **Approach 2: SoftMax Algorithm** |  |
+| --- | --- |
+| **Utilized Methods** | `PredictWithSoftmax`, `CalculateSoftmaxWeights` |
+| **Metrics Available** | `ComputeCosineSimilarity` |
+| **Distance Table Method** | `GetDistanceTableforCosine` |
+| **Probability Method** | `Softmax` |
 
 ## Getting Started:
 
