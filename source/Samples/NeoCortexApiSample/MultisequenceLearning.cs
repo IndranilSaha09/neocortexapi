@@ -136,7 +136,7 @@ namespace NeoCortexApiSample
 
             var lastPredictedValues = new List<string>(new string[] { "0" });
 
-            int maxCycles = 200;
+            int maxCycles = 2500;
 
             //
             // Training SP to get stable. New-born stage.
