@@ -75,12 +75,8 @@ In this project, the softmax function is utilized to determine the weightage of 
 
 The softmax function is mathematically represented as:
 
-\[ P_i = \frac{e^{w_i}}{\sum_{j=1}^{N}e^{w_j}} \]
+![image](https://github.com/IndranilSaha09/neocortexapi/assets/52401793/ea4692e4-aa67-4f0d-b9f1-03b809b6c6e1)
 
-Where:
-- \( P_i \) is the probability of class \( i \),
-- \( w_i \) is the weight associated with class \( i \),
-- \( N \) is the total number of classes.
 
 ### Weight Calculation
 
