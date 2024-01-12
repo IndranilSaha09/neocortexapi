@@ -46,6 +46,12 @@ Based on probabilities:
 - Class 1 (Probability ≈ 0.1585) - Lowest weight.
 
 
+## Architecture of KNN Classifier:
+
+<img width="222" alt="image" src="https://github.com/IndranilSaha09/neocortexapi/assets/52401793/3cd1f1ad-f137-4ebb-8b71-8cabe62a050e">
+
+
+The implemented architecture combines Hierarchical Temporal Memory (HTM) and a K-nearest neighbors (KNN) classifier for sequence learning. Leveraging HTM functionalities such as CortexLayer and TemporalMemory from the NeoCortexApi namespace, the process involves configuring HTM parameters and employing a ScalarEncoder to transform scalar values into sparse distributed representations (SDRs). The experiment execution follows a sequence, initializing HTM components (SpatialPooler, TemporalMemory), and the KNN classifier. Training begins with the Spatial Pooler (SP), achieving stability before joint training of SP and Temporal Memory (TM) with provided sequences. The KNN classifier operates alongside HTM, utilizing active and winner cells to predict future elements in sequences, complementing HTM's sequence learning capabilities.
 
 ## Approaches of KNN Classifier:
 
