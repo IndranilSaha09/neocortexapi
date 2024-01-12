@@ -45,6 +45,19 @@ Based on probabilities:
 - Class 2 (Probability ≈ 0.2900) - Second-highest weight.
 - Class 1 (Probability ≈ 0.1585) - Lowest weight.
 
+The Softmax-based classification for the unclassified set, with corresponding probabilities, is as follows:
+
+Predicted Class: Class 3
+Probability: Approximately 0.5515
+
+Second Predicted Class: Class 2
+Probability: Approximately 0.2900
+
+Third Predicted Class: Class 1
+Probability: Approximately 0.1585
+
+This outcome indicates that, according to the Softmax-weighted mechanism, the unclassified set is most likely associated with Class 3, followed by Class 2 and then Class 1. The probabilities represent the model's confidence in each classification based on the calculated Softmax weights.
+
 
 ## Architecture of KNN Classifier:
 
