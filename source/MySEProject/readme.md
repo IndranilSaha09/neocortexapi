@@ -66,6 +66,37 @@ This outcome indicates that, according to the Softmax-weighted mechanism, the un
 
 The implemented architecture combines Hierarchical Temporal Memory (HTM) and a K-nearest neighbors (KNN) classifier for sequence learning. Leveraging HTM functionalities such as CortexLayer and TemporalMemory from the NeoCortexApi namespace, the process involves configuring HTM parameters and employing a ScalarEncoder to transform scalar values into sparse distributed representations (SDRs). The experiment execution follows a sequence, initializing HTM components (SpatialPooler, TemporalMemory), and the KNN classifier. Training begins with the Spatial Pooler (SP), achieving stability before joint training of SP and Temporal Memory (TM) with provided sequences. The KNN classifier operates alongside HTM, utilizing active and winner cells to predict future elements in sequences, complementing HTM's sequence learning capabilities.
 
+
+## Softmax Weightage Mechanism
+
+In this project, the softmax function is utilized to determine the weightage of different classes in the final output, contributing to effective classification. The softmax operation involves converting a set of weights into a probability distribution, ensuring that the highest probability class receives the maximum weight.
+
+### Softmax Function
+
+The softmax function is mathematically represented as:
+
+\[ P_i = \frac{e^{w_i}}{\sum_{j=1}^{N}e^{w_j}} \]
+
+Where:
+- \( P_i \) is the probability of class \( i \),
+- \( w_i \) is the weight associated with class \( i \),
+- \( N \) is the total number of classes.
+
+### Weight Calculation
+
+To obtain weights for different classes, the softmax function is applied to the initial weights, resulting in a probability distribution. The weights are then determined based on these probabilities.
+
+### Softmax Normalization
+
+After calculating weights using the softmax function, the weights are normalized to ensure they sum up to 1. This normalization step enhances interpretability and aids in determining the significance of each class in the final decision.
+
+### Output Decision
+
+The final output is influenced by the probabilities assigned to each class. The class with the highest probability is given the maximum weight, influencing the model's decision-making process.
+
+This softmax weightage mechanism is crucial for effective classification and is employed to enhance the interpretability of the model's predictions.
+
+
 ## Approaches of KNN Classifier:
 
 | **Approach 1: Simple Weightage Algorithm** |  |
