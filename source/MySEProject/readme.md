@@ -97,9 +97,9 @@ This softmax weightage mechanism is crucial for effective classification and is 
 
 | **Approach 1: Simple Weightage Algorithm** |  |
 | --- | --- |
-| **Prediction and Weightage Methods** | [GetPredictedInputValues](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L278), [SelectBestClassification](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#444) |
-| **Metrics Available** | `LeastValue`, `ComputeCosineSimilarity` |
-| **Distance Table Methods** | `GetDistanceTable`, `GetDistanceTableforCosine` |
+| **Prediction and Weightage Methods** | [GetPredictedInputValues](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L278), [SelectBestClassification](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L444) |
+| **Metrics Available** | [LeastValue](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L329), [ComputeCosineSimilarity](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L374) |
+| **Distance Table Methods** | [GetDistanceTable](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L348), [GetDistanceTableforCosine](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L403) |
 
 | **Approach 2: SoftMax Algorithm**          |  |
 | --- | --- |
