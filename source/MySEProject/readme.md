@@ -97,7 +97,7 @@ This softmax weightage mechanism is crucial for effective classification and is 
 
 | **Approach 1: Simple Weightage Algorithm** |  |
 | --- | --- |
-| **Prediction and Weightage Methods** | `GetPredictedInputValues`, `SelectBestClassification` |
+| **Prediction and Weightage Methods** | [GetPredictedInputValues](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L278), [SelectBestClassification](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#444) |
 | **Metrics Available** | `LeastValue`, `ComputeCosineSimilarity` |
 | **Distance Table Methods** | `GetDistanceTable`, `GetDistanceTableforCosine` |
 
