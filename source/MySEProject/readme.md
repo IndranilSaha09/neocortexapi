@@ -103,10 +103,10 @@ This softmax weightage mechanism is crucial for effective classification and is 
 
 | **Approach 2: SoftMax Algorithm**          |  |
 | --- | --- |
-| **Prediction and Weightage Methods**       | `PredictWithSoftmax`, `CalculateSoftmaxWeights` |
-| **Metrics Available** | `ComputeCosineSimilarity` |
-| **Distance Table Method** | `GetDistanceTableforCosine` |
-| **Probability Method** | `Softmax` |
+| **Prediction and Weightage Methods**       | [PredictWithSoftmax](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L555), [CalculateSoftmaxWeights](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L648) |
+| **Metrics Available** | [ComputeCosineSimilarity](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L374) |
+| **Distance Table Method** | [GetDistanceTableforCosine](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L403)  |
+| **Probability Method** | [Softmax](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L620) |
 
 
 ## Getting Started:
