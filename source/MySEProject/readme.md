@@ -18,6 +18,16 @@ Considering the given example, where classified and unclassified sets represent 
 - **Cosine Similarity**: Measures the cosine of the angle between two vectors, indicating their directional similarity, useful for high-dimensional data. Ex - 0.8104
 - **Distance from Similarity**:  Quantifies how dissimilar two points are, based on their cosine similarity, aiding in determining their closeness for classification purposes. Ex - 19
 
+
+
+
+## Architecture of KNN Classifier:
+
+<img width="222" alt="image" src="https://github.com/IndranilSaha09/neocortexapi/assets/52401793/3cd1f1ad-f137-4ebb-8b71-8cabe62a050e">
+
+
+The implemented architecture combines Hierarchical Temporal Memory (HTM) and a K-nearest neighbors (KNN) classifier for sequence learning. Leveraging HTM functionalities such as CortexLayer and TemporalMemory from the NeoCortexApi namespace, the process involves configuring HTM parameters and employing a ScalarEncoder to transform scalar values into sparse distributed representations (SDRs). The experiment execution follows a sequence, initializing HTM components (SpatialPooler, TemporalMemory), and the KNN classifier. Training begins with the Spatial Pooler (SP), achieving stability before joint training of SP and Temporal Memory (TM) with provided sequences. The KNN classifier operates alongside HTM, utilizing active and winner cells to predict future elements in sequences, complementing HTM's sequence learning capabilities.
+
 #### Cosine Similarity Calculation:
 
 Cosine similarity measures the similarity between two non-zero vectors:
@@ -67,14 +77,6 @@ Third Predicted Class: Class 1
 Probability: Approximately 0.1585
 
 This outcome indicates that, according to the Softmax-weighted mechanism, the unclassified set is most likely associated with Class 3, followed by Class 2 and then Class 1. The probabilities represent the model's confidence in each classification based on the calculated Softmax weights.
-
-
-## Architecture of KNN Classifier:
-
-<img width="222" alt="image" src="https://github.com/IndranilSaha09/neocortexapi/assets/52401793/3cd1f1ad-f137-4ebb-8b71-8cabe62a050e">
-
-
-The implemented architecture combines Hierarchical Temporal Memory (HTM) and a K-nearest neighbors (KNN) classifier for sequence learning. Leveraging HTM functionalities such as CortexLayer and TemporalMemory from the NeoCortexApi namespace, the process involves configuring HTM parameters and employing a ScalarEncoder to transform scalar values into sparse distributed representations (SDRs). The experiment execution follows a sequence, initializing HTM components (SpatialPooler, TemporalMemory), and the KNN classifier. Training begins with the Spatial Pooler (SP), achieving stability before joint training of SP and Temporal Memory (TM) with provided sequences. The KNN classifier operates alongside HTM, utilizing active and winner cells to predict future elements in sequences, complementing HTM's sequence learning capabilities.
 
 
 ## Softmax Weightage Mechanism
