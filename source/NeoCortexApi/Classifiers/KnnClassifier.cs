@@ -595,7 +595,5 @@ namespace NeoCortexApi.Classifiers
 
             return softmaxWeights;
         }
-
-
     }
 }

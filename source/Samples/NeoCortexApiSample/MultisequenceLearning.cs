@@ -52,7 +52,7 @@ namespace NeoCortexApiSample
         /// <param name="sequences">Dictionary of sequences. KEY is the sewuence name, the VALUE is th elist of element of the sequence.</param>        
         public Predictor Run(Dictionary<string, List<double>> sequences)
         {
-            Console.WriteLine($"Hello NeocortexApi! Experiment {nameof(MultiSequenceLearning)}");
+            Console.WriteLine($"Hello NeocortexApi ! Experiment {nameof(MultiSequenceLearning)}");
 
             int inputBits = 100;
             int numColumns = 1024;
