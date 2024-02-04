@@ -13,10 +13,10 @@ Considering the given example, where classified and unclassified sets represent 
 
 ## Example
 
-- **Classified Set**: [1857, 1862, 2126, 4629, 4954]
-- **Unclassified Set**: [1857, 2141, 2212, 4617, 4954]
-- **Cosine Similarity**: 0.8104
-- **Distance from Similarity**: 19
+- **Classified Set**:refers to data points with known labels. Ex - [1857, 1862, 2126, 4629, 4954]
+- **Unclassified Set**: consists of data points needing classification. Ex - [1857, 2141, 2212, 4617, 4954]
+- **Cosine Similarity**: measures the cosine of the angle between two vectors, indicating their directional similarity, useful for high-dimensional data. Ex - 0.8104
+- **Distance from Similarity**:  quantifies how dissimilar two points are, based on their cosine similarity, aiding in determining their closeness for classification purposes. Ex - 19
 
 #### Cosine Similarity Calculation:
 Cosine similarity measures the similarity between two non-zero vectors:
