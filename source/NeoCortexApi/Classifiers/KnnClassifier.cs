@@ -4,10 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 20a60febbd24a40bf09aa1ed822212a782d01bc5
 
 namespace NeoCortexApi.Classifiers
 {
