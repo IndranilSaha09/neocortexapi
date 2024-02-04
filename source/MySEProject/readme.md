@@ -45,6 +45,19 @@ Based on probabilities:
 - Class 2 (Probability ≈ 0.2900) - Second-highest weight.
 - Class 1 (Probability ≈ 0.1585) - Lowest weight.
 
+The Softmax-based classification for the unclassified set, with corresponding probabilities, is as follows:
+
+Predicted Class: Class 3
+Probability: Approximately 0.5515
+
+Second Predicted Class: Class 2
+Probability: Approximately 0.2900
+
+Third Predicted Class: Class 1
+Probability: Approximately 0.1585
+
+This outcome indicates that, according to the Softmax-weighted mechanism, the unclassified set is most likely associated with Class 3, followed by Class 2 and then Class 1. The probabilities represent the model's confidence in each classification based on the calculated Softmax weights.
+
 
 ## Architecture of KNN Classifier:
 
@@ -53,20 +66,47 @@ Based on probabilities:
 
 The implemented architecture combines Hierarchical Temporal Memory (HTM) and a K-nearest neighbors (KNN) classifier for sequence learning. Leveraging HTM functionalities such as CortexLayer and TemporalMemory from the NeoCortexApi namespace, the process involves configuring HTM parameters and employing a ScalarEncoder to transform scalar values into sparse distributed representations (SDRs). The experiment execution follows a sequence, initializing HTM components (SpatialPooler, TemporalMemory), and the KNN classifier. Training begins with the Spatial Pooler (SP), achieving stability before joint training of SP and Temporal Memory (TM) with provided sequences. The KNN classifier operates alongside HTM, utilizing active and winner cells to predict future elements in sequences, complementing HTM's sequence learning capabilities.
 
+
+## Softmax Weightage Mechanism
+
+In this project, the softmax function is utilized to determine the weightage of different classes in the final output, contributing to effective classification. The softmax operation involves converting a set of weights into a probability distribution, ensuring that the highest probability class receives the maximum weight.
+
+### Softmax Function
+
+The softmax function is mathematically represented as:
+
+![image](https://github.com/IndranilSaha09/neocortexapi/assets/52401793/ea4692e4-aa67-4f0d-b9f1-03b809b6c6e1)
+
+
+### Weight Calculation
+
+To obtain weights for different classes, the softmax function is applied to the initial weights, resulting in a probability distribution. The weights are then determined based on these probabilities.
+
+### Softmax Normalization
+
+After calculating weights using the softmax function, the weights are normalized to ensure they sum up to 1. This normalization step enhances interpretability and aids in determining the significance of each class in the final decision.
+
+### Output Decision
+
+The final output is influenced by the probabilities assigned to each class. The class with the highest probability is given the maximum weight, influencing the model's decision-making process.
+
+This softmax weightage mechanism is crucial for effective classification and is employed to enhance the interpretability of the model's predictions.
+
+
 ## Approaches of KNN Classifier:
 
 | **Approach 1: Simple Weightage Algorithm** |  |
 | --- | --- |
-| **Prediction and Weightage Methods** | `GetPredictedInputValues`, `SelectBestClassification` |
-| **Metrics Available** | `LeastValue`, `ComputeCosineSimilarity` |
-| **Distance Table Methods** | `GetDistanceTable`, `GetDistanceTableforCosine` |
+| **Prediction and Weightage Methods** | [GetPredictedInputValues](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L278), [SelectBestClassification](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L444) |
+| **Metrics Available** | [LeastValue](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L329), [ComputeCosineSimilarity](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L374) |
+| **Distance Table Methods** | [GetDistanceTable](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L348), [GetDistanceTableforCosine](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L403) |
 
 | **Approach 2: SoftMax Algorithm**          |  |
 | --- | --- |
-| **Prediction and Weightage Methods**       | `PredictWithSoftmax`, `CalculateSoftmaxWeights` |
-| **Metrics Available** | `ComputeCosineSimilarity` |
-| **Distance Table Method** | `GetDistanceTableforCosine` |
-| **Probability Method** | `Softmax` |
+| **Prediction and Weightage Methods**       | [PredictWithSoftmax](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L555), [CalculateSoftmaxWeights](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L648) |
+| **Metrics Available** | [ComputeCosineSimilarity](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L374) |
+| **Distance Table Method** | [GetDistanceTableforCosine](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L403)  |
+| **Probability Method** | [Softmax](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L620) |
 
 
 ## Getting Started:
