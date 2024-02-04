@@ -19,7 +19,7 @@ namespace NeoCortexApi
     {
         private CortexLayer<object, object> layer1;
         private Connections mem;
-        private KNeighborsClassifier<string, ComputeCycle> classifier { get; set; }
+        private IClassifier<string, ComputeCycle> classifier { get; set; }
 
         private Connections connections { get; set; }
 
@@ -34,7 +34,7 @@ namespace NeoCortexApi
         /// <param name="connections">The HTM memory in the learned state.</param>
         /// <param name="classifier">The classifier that contains the state of learned sequences.</param>
 
-        public Predictor(CortexLayer<object, object> layer, Connections connections, KNeighborsClassifier<string, ComputeCycle> classifier)
+        public Predictor(CortexLayer<object, object> layer, Connections connections, IClassifier<string, ComputeCycle> classifier)
         {
             this.connections = connections;
             this.layer = layer;

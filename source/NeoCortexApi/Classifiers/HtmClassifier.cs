@@ -65,6 +65,14 @@ namespace NeoCortexApi.Classifiers
             m_AllInputs.Clear();
         }
 
+
+        public List<ClassifierResult<TIN>> PredictWithSoftmax(Cell[] predictiveCells, short howMany = 1)
+        {
+            // Implementation for predicting using the Softmax approach
+            // This is just a conceptual placeholder; you'll need to define how softmax prediction should work with your classifier
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Checks if the same SDR is already stored under the given key.
         /// </summary>

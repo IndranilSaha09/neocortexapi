@@ -16,10 +16,40 @@ namespace NeoCortexApiSample
     /// </summary>
     public class MultiSequenceLearning
     {
+
+        public enum PredictionAlgorithm
+        {
+            Default,
+            Softmax
+        }
+
+        private PredictionAlgorithm GetUserPredictionAlgorithmChoice()
+        {
+            Console.WriteLine("Choose the prediction algorithm:");
+            Console.WriteLine("1 - Default Prediction");
+            Console.WriteLine("2 - Softmax Prediction");
+            Console.Write("Enter your choice (1 or 2): ");
+
+            string choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    return PredictionAlgorithm.Default;
+                case "2":
+                    return PredictionAlgorithm.Softmax;
+                default:
+                    Console.WriteLine("Invalid choice, defaulting to Default Prediction.");
+                    return PredictionAlgorithm.Default;
+            }
+        }
+
+        // Define a delegate that matches the prediction methods signature
+        delegate List<ClassifierResult<string>> PredictionMethod(Cell[] predictiveCells, short howMany);
+
         /// <summary>
         /// Runs the learning of sequences.
         /// </summary>
-        /// <param name="sequences">Dictionary of sequences. KEY is the sewuence name, the VALUE is th elist of element of the sequence.</param>
+        /// <param name="sequences">Dictionary of sequences. KEY is the sewuence name, the VALUE is th elist of element of the sequence.</param>        
         public Predictor Run(Dictionary<string, List<double>> sequences)
         {
             Console.WriteLine($"Hello NeocortexApi! Experiment {nameof(MultiSequenceLearning)}");
@@ -78,6 +108,7 @@ namespace NeoCortexApiSample
         /// </summary>
         private Predictor RunExperiment(int inputBits, HtmConfig cfg, EncoderBase encoder, Dictionary<string, List<double>> sequences)
         {
+
             Console.WriteLine("Test");
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -89,7 +120,27 @@ namespace NeoCortexApiSample
             bool isInStableState = false;
 
             //HtmClassifier<string, ComputeCycle> cls = new HtmClassifier<string, ComputeCycle>();
-            var cls = new KNeighborsClassifier<string, ComputeCycle>();
+            //var cls = new KNeighborsClassifier<string, ComputeCycle>();
+            
+            IClassifier<string, ComputeCycle> cls = new KNeighborsClassifier<string, ComputeCycle>();
+
+            // Get the user's choice for the prediction algorithm
+            PredictionAlgorithm predictionAlgorithm = GetUserPredictionAlgorithmChoice();
+
+            // Declare a variable for the delegate
+            PredictionMethod predict;
+
+            // Assign the appropriate method to the delegate based on the chosen algorithm
+            switch (predictionAlgorithm)
+            {
+                case PredictionAlgorithm.Softmax:
+                    predict = cls.PredictWithSoftmax; // Casting to specific classifier type
+                    break;
+                default:
+                    predict = cls.GetPredictedInputValues; // Directly using the method from the IClassifier interface
+                    break;
+            }
+
 
             Console.WriteLine("Test_92");
             var numUniqueInputs = GetNumberOfInputs(sequences);
@@ -258,7 +309,9 @@ namespace NeoCortexApiSample
                         if (lyrOut.PredictiveCells.Count > 0)
                         {
                             //var predictedInputValue = cls.GetPredictedInputValue(lyrOut.PredictiveCells.ToArray());
-                            var predictedInputValues = cls.PredictWithSoftmax(lyrOut.PredictiveCells.ToArray(), 3);
+                            //var predictedInputValues = cls.PredictWithSoftmax(lyrOut.PredictiveCells.ToArray(), 3);
+                            // Use the delegate to predict
+                            List<ClassifierResult<string>> predictedInputValues = predict(lyrOut.PredictiveCells.ToArray(), 3);
 
                             foreach (var item in predictedInputValues)
                             {

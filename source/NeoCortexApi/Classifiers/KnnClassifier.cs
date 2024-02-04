@@ -4,99 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-/*
 
-KNN Classifier Example of How it works:
-- Models: Two models used for classification.
-- Classified Sequence: [3, 7, 11, 15, 20]
-- Unclassified Sequence: [2, 6, 9, 13, 18]
-
-Steps:
-1. **LeastValue Method:**
-   - For unclassifiedIdx = 2:
-     - Comparing 2 against each index in the classifiedSequence:
-       |3 - 2| = 1, |7 - 2| = 5, |11 - 2| = 9, |15 - 2| = 13, |20 - 2| = 18.
-       LeastValue(classifiedSequence, 2) = 1
-
-   - For unclassifiedIdx = 6:
-     - Comparing 6 against each index in the classifiedSequence:
-       |3 - 6| = 3, |7 - 6| = 1, |11 - 6| = 5, |15 - 6| = 9, |20 - 6| = 14.
-       LeastValue(classifiedSequence, 6) = 1
-       
-   - Similarly, compute LeastValue for unclassifiedIdx = 9, 13, and 18.
-
-2. **GetDistanceTable Method:**
-   - Construct the distanceTable using the results from the LeastValue method:
-     - For unclassifiedIdx = 2, 6, 9, 13, 18, the shortest distances are 1 or 2.
-
-3. **Weighted Votes Calculation:**
-   - Compute weighted votes based on the inverse of distances:
-     - For index 2: 1 / 1 = 1
-     - For index 6: 1 / 1 = 1
-     - For index 9: 1 / 2 = 0.5
-     - For index 13: 1 / 2 = 0.5
-     - For index 18: 1 / 2 = 0.5
-
-4. **Overlaps Calculation:**
-   - No overlaps found as distances are not zero.
-
-5. **Similarity Scores Calculation:**
-   - No overlaps, so no calculations based on overlaps.
-
-6. **Normalization of Weighted Votes:**
-   - Normalize the weighted votes and add them to similarity scores:
-     - For index 2: 1
-     - For index 6: 1
-     - For index 9: 0.5
-     - For index 13: 0.5
-     - For index 18: 0.5
-
-7. **Final Decision:**
-   - Order the classifications based on the similarity scores:
-     [2, 6, 9, 13, 18] (descending order of calculated scores)
-
-This sequence indicates the predictions in descending order of their similarity scores.
-This demonstrates how distances, weighted votes, and similarity scores are calculated and utilized to determine the best classifications for the unclassified points based on their proximity to the classified points.
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Lets breakdown how cosine similarity works for this algorithm
-
-1. Vector Representation:
-
-Consider the Classified Set and Unclassified Set as vectors in a high-dimensional space.
-Each index present in the set represents a non-zero value in the corresponding vector.
-Classified Set: [1857, 1862, 2126, ... , 4629, 4954]
-Unclassified Set: [1857, 2141, 2212, ... , 4617, 4954]
-
-2. Cosine Similarity Computation:
-
-Calculate the cosine similarity between the two vectors (sets) using the formula:
-cosine_similarity = dot_product(A, B) / (||A|| * ||B||)
-Dot Product: Calculate the dot product of the Classified Set and Unclassified Set.
-Vector Length: Compute the lengths (magnitudes) of the Classified and Unclassified Sets.
-
-3. Understanding Cosine Similarity:
-
-The cosine similarity ranges from 0 to 1, where:
-1 implies perfect similarity (identical vectors).
-0 indicates no similarity (orthogonal or completely different vectors).
-Consistently computed cosine similarity of 0.8104408984731079 implies a high degree of similarity between the two sets.
-
-4. Deriving Distance from Similarity:
-
-Distance is derived from similarity using the formula: Distance = (1 - Cosine Similarity) * 100.
-This distance measure ranges from 0 to 100:
-0 implies perfect similarity.
-100 indicates no similarity.
-
-5. Distance Table Representation:
-
-The distance table shows calculated distances between corresponding elements (keys) of the Classified and Unclassified Sets.
-For example, the distance for the first entry (Key: 1857) is displayed as 18.
-Since the cosine similarity remains consistent for all keys, the calculated distances for each key pair are also the same (18 in this case).
-
- */
 
 namespace NeoCortexApi.Classifiers
 {
@@ -126,6 +34,7 @@ namespace NeoCortexApi.Classifiers
             set => base[key] = value;
         }
     }
+
 
     /// <summary>
     /// Represents a pair of Classification and Distance for comparison as container.
@@ -176,7 +85,6 @@ namespace NeoCortexApi.Classifiers
         }
     }
 
-
     /// <summary>
     /// Implementation of the K-nearest neighbors (KNN) classifier algorithm. 
     /// </summary>
@@ -185,6 +93,8 @@ namespace NeoCortexApi.Classifiers
         private Dictionary<string, List<int[]>> models = new Dictionary<string, List<int[]>>();
         private int numberOfNeighbors = 3;
         private int sdrs = 10;
+
+
 
         public int SetNumberOfNeighbors(int k)
         {

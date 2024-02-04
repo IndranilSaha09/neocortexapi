@@ -10,5 +10,8 @@ namespace NeoCortexApi.Classifiers
     {
         void Learn(TIN input, Cell[] output);
         List<ClassifierResult<TIN>> GetPredictedInputValues(Cell[] predictiveCells, short howMany = 1);
+        List<ClassifierResult<TIN>> PredictWithSoftmax(Cell[] unclassifiedCells, short howMany = 1);
+
+        void ClearState();
     }
 }

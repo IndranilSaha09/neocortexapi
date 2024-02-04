@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Damir Dobric. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 using NeoCortexApi.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,6 +35,19 @@ namespace NeoCortexApi.Classifiers
         {
             throw new System.NotImplementedException();
         }
+        public void ClearState()
+        {
+            // Implementation to clear or reset the classifier's state
+            m_ActiveMap.Clear();
+        }
+
+        public List<ClassifierResult<TIN>> PredictWithSoftmax(Cell[] predictiveCells, short howMany = 1)
+        {
+            // Implementation for predicting using the Softmax approach
+            // This is just a conceptual placeholder; you'll need to define how softmax prediction should work with your classifier
+            throw new NotImplementedException();
+        }
+
 
         public void Learn(TIN input, Cell[] activeCells, bool learn)
         {

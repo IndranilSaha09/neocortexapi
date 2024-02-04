@@ -359,5 +359,18 @@ namespace NeoCortexApi.Classifiers
         {
             throw new NotImplementedException();
         }
+        public void ClearState()
+        {
+            // Implementation to clear or reset the classifier's state
+            throw new NotImplementedException();
+        }
+
+        public List<ClassifierResult<TIN>> PredictWithSoftmax(Cell[] predictiveCells, short howMany = 1)
+        {
+            // Implementation for predicting using the Softmax approach
+            // This is just a conceptual placeholder; you'll need to define how softmax prediction should work with your classifier
+            throw new NotImplementedException();
+        }
+
     }
 }
