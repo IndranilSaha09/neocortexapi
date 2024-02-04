@@ -4,6 +4,12 @@
 
 The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN) algorithm that is designed and integrated with the Neocortex API. It provides functionality for classification tasks based on the proximity of unclassified sequences to classified sequences in high-dimensional space.
 
+## KNN Classifier
+
+The K-Nearest Neighbors (KNN) Classifier is a simple, intuitive machine learning algorithm used for both classification and regression tasks, but more commonly for classification. It works by finding the 'k' nearest data points to a new, unclassified point based on distance metrics like Euclidean distance and predicts the new point's class based on the majority class among those neighbors.
+
+Considering the given example, where classified and unclassified sets represent data points in a multidimensional space, KNN could be used to classify an unclassified point by comparing it against classified points. The cosine similarity of 0.8104 indicates the degree of similarity between two points, and the distance from similarity helps in determining the closeness of points, influencing the classification outcome.
+
 
 ## Example
 
