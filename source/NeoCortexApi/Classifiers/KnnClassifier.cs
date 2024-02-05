@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
+
 namespace NeoCortexApi.Classifiers
 {
 
@@ -93,6 +94,14 @@ namespace NeoCortexApi.Classifiers
         private int numberOfNeighbors = 3;
         private int sdrs = 10;
 
+        private bool useSoftmax = false; // Added flag for softmax usage
+
+
+        // Constructor to set the useSoftmax flag
+        public KNeighborsClassifier(bool useSoftmax = false)
+        {
+            this.useSoftmax = useSoftmax;
+        }
 
 
         public int SetNumberOfNeighbors(int k)
@@ -189,6 +198,11 @@ namespace NeoCortexApi.Classifiers
             if (unclassifiedCells.Length == 0)
                 return new List<ClassifierResult<TIN>>();
 
+            if (useSoftmax)
+            {
+                return PredictWithSoftmax(unclassifiedCells, howMany);
+            }
+
             var unclassifiedSequences = unclassifiedCells.Select(cell => cell.Index).ToArray();
             var mappedElements = new DefaultDictionary<int, List<ClassificationAndDistance>>();
             int neighbors = Math.Min(numberOfNeighbors, models.Values.Sum(x => x.Count));
@@ -197,7 +211,7 @@ namespace NeoCortexApi.Classifiers
             {
                 foreach (var sequence in model.Value)
                 {
-                    var distanceTable = GetDistanceTableforCosine(sequence, unclassifiedSequences);
+                    var distanceTable = GetDistanceTable(sequence, unclassifiedSequences);
 
                     foreach (var kvp in distanceTable)
                     {
@@ -260,16 +274,28 @@ namespace NeoCortexApi.Classifiers
 
             foreach (var unclassifiedIdx in unclassifiedSequence)
             {
-                var shortestDistance = LeastValue(classifiedSequence, unclassifiedIdx);
+                var shortestDistance = int.MaxValue; // Initialize to a large value
+
+                // Calculate the shortest distance for the current unclassified index
+                foreach (var classifiedIdx in classifiedSequence)
+                {
+                    var distance = Math.Abs(classifiedIdx - unclassifiedIdx);
+                    shortestDistance = Math.Min(shortestDistance, distance);
+                }
+
+                // Create an entry in the distanceTable if it doesn't exist for the unclassified index
                 if (!distanceTable.ContainsKey(unclassifiedIdx))
                 {
                     distanceTable[unclassifiedIdx] = new List<ClassificationAndDistance>();
                 }
+
+                // Add the ClassificationAndDistance object to the list for this unclassified index
                 distanceTable[unclassifiedIdx].Add(new ClassificationAndDistance("Classification", shortestDistance));
             }
 
             return distanceTable;
         }
+
 
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -510,15 +536,18 @@ namespace NeoCortexApi.Classifiers
             // Get softmax probabilities from the softmax weights
             var softmaxProbabilities = Softmax(softmaxWeights);
 
+            // Sort the probabilities in descending order
+            var sortedProbabilities = softmaxProbabilities.OrderByDescending(kv => kv.Value);
+
             // Prepare results with softmax probabilities
             var results = softmaxProbabilities.Select(kv => new ClassifierResult<TIN>
             {
                 PredictedInput = kv.Key,
                 Similarity = kv.Value, // Using softmax probability as similarity score
-                                       
+
             }).ToList();
 
-            return results.Take(howMany).ToList();
+            return results.Take(howMany).ToList(); // Ensure the method returns List<ClassifierResult<TIN>>
         }
 
         /// <summary>
