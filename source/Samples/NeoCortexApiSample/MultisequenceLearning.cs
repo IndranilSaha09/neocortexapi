@@ -97,6 +97,7 @@ namespace NeoCortexApiSample
             //HtmClassifier<string, ComputeCycle> cls = new HtmClassifier<string, ComputeCycle>();
             //var cls = new KNeighborsClassifier<string, ComputeCycle>();
 
+            //Create an instance of KNeighborsClassifier with Softmax enabled (useSoftmax is set to true) if not (useSoftmax is set to false)
             KNeighborsClassifier<string, ComputeCycle> cls = new KNeighborsClassifier<string, ComputeCycle>(useSoftmax: true);
 
 
