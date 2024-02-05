@@ -82,7 +82,7 @@ IClassifier<string,ComputeCycle>cls = new KNeighborsClassifier<string, ComputeCy
 
 ## Getting Started:
 
-Go to the `Samples` folder which is one folder above and inside where a folder names NeoCortexApiSample is present.
+Go to the `..\neocortexapi\source\Samples` folder which is one folder above and inside where a folder names NeoCortexApiSample is present.
 From there run the `Program.cs` file to run the KNN Classifier.
 
 ```bash
