@@ -4,12 +4,9 @@
 
 The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN) algorithm that is designed and integrated with the Neocortex API. It takes in a sequence of values and preassigned labels to train the model. Once the model (a Dictionary mapping of labels to their sequences) is trained the user can give unclassified sequence that needs to be labeled.
 
-## KNN Classifier
+## Example
 
 In this project, lets assume three distinct sequences labeled as Category X, Category Y, and Category Z are trained using the `Learn` method, which feeds the model with classified sequences represented by TIN input and associated Cell[] cells. Subsequently, the K-Nearest Neighbors (KNN) implementation predicts labels for unclassified sequences in the subsequent stage of the pipeline using the `GetPredictedInputValues` method, returning a list of `ClassifierResult` objects. This approach facilitates sequence classification with the flexibility to customize the number of neighbors considered and the option to apply Softmax normalization for enhanced prediction accuracy.
-
-
-## Example
 
 #### Step 1: Defining Labeled Sequences
 
