@@ -98,7 +98,7 @@ namespace NeoCortexApiSample
             //var cls = new KNeighborsClassifier<string, ComputeCycle>();
 
             //Create an instance of KNeighborsClassifier with Softmax enabled (useSoftmax is set to true) if not (useSoftmax is set to false)
-            KNeighborsClassifier<string, ComputeCycle> cls = new KNeighborsClassifier<string, ComputeCycle>(useSoftmax: true);
+            IClassifier<string, ComputeCycle> cls = new KNeighborsClassifier<string, ComputeCycle>(useSoftmax: true);
 
 
             Console.WriteLine("Test_92");
