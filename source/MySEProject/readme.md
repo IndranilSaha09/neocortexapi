@@ -72,7 +72,7 @@ The output is a list of `ClassifierResult` objects that provide a verdict on the
 2. Locate the following line of code:
 
 ```csharp
-IClassifier<string,ComputeCycle>cls = new KNeighborsClassifier<string, ComputeCycle>(useSoftmax:false);
+IClassifier<string,ComputeCycle>cls = new KNeighborsClassifier<string,ComputeCycle>(useSoftmax:false);
 ```
 
 3. Change it to:
