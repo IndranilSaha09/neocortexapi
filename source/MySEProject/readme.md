@@ -36,7 +36,6 @@ Next, use the KNN classifier's GetPredictedInputValues method to predict the lab
 #### Step 5: Verdict
 The result of the classification will be a list of ClassifierResult objects. These objects contain the predicted labels and potentially additional information about the prediction.
 
-Example Output
 In this example, the predicted labels for the unclassified sequence may be as follows:
 
 "Category X" being the closest match.
