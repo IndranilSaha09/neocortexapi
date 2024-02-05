@@ -65,9 +65,8 @@ The output is a list of `ClassifierResult` objects that provide a verdict on the
 | **Distance Table Method** | [GetDistanceTableforCosine](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L338)  |
 | **Probability Method** | [Softmax](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L558) |
 
-#### To use SoftMax Algorithm
 
-To enable the use of SoftMax algorithm, follow these steps:
+**To enable the use of SoftMax algorithm, follow these steps:**
 
 1. Navigate to [MultiSequenceLearning.cs](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/Samples/NeoCortexApiSample/MultisequenceLearning.cs#L101)
 2. Locate the following line of code:
