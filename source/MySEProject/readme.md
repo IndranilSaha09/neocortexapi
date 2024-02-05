@@ -2,123 +2,87 @@
 
 ## Implementation
 
-The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN) algorithm that is designed and integrated with the Neocortex API. It provides functionality for classification tasks based on the proximity of unclassified sequences to classified sequences in high-dimensional space.
+The `KNeighborsClassifier` is an implementation of the K-nearest neighbors (KNN) algorithm that is designed and integrated with the Neocortex API. It takes in a sequence of values and preassigned labels to train the model. Once the model (a Dictionary mapping of labels to their sequences) is trained the user can give unclassified sequence that needs to be labeled.
 
 ## KNN Classifier
 
-The K-Nearest Neighbors (KNN) Classifier is a simple, intuitive machine learning algorithm used for both classification and regression tasks, but more commonly for classification. It works by finding the 'k' nearest data points to a new, unclassified point based on distance metrics like Euclidean distance and predicts the new point's class based on the majority class among those neighbors.
-
-Considering the given example, where classified and unclassified sets represent data points in a multidimensional space, KNN could be used to classify an unclassified point by comparing it against classified points. The cosine similarity of 0.8104 indicates the degree of similarity between two points, and the distance from similarity helps in determining the closeness of points, influencing the classification outcome.
+In this project, lets assume three distinct sequences labeled as Category X, Category Y, and Category Z are trained using the `Learn` method, which feeds the model with classified sequences represented by TIN input and associated Cell[] cells. Subsequently, the K-Nearest Neighbors (KNN) implementation predicts labels for unclassified sequences in the subsequent stage of the pipeline using the `GetPredictedInputValues` method, returning a list of `ClassifierResult` objects. This approach facilitates sequence classification with the flexibility to customize the number of neighbors considered and the option to apply Softmax normalization for enhanced prediction accuracy.
 
 
 ## Example
 
-- **Classified Set**: Refers to data points with known labels. Ex - [1857, 1862, 2126, 4629, 4954]
-- **Unclassified Set**: Consists of data points needing classification. Ex - [1857, 2141, 2212, 4617, 4954]
-- **Cosine Similarity**: Measures the cosine of the angle between two vectors, indicating their directional similarity, useful for high-dimensional data. Ex - 0.8104
-- **Distance from Similarity**:  Quantifies how dissimilar two points are, based on their cosine similarity, aiding in determining their closeness for classification purposes. Ex - 19
+#### Step 1: Defining Labeled Sequences
 
+In this step, you should define a set of labeled sequences that will be used to train the KNN classifier. Each sequence should be associated with a unique label. For example:
 
+```bash
+models = {
+    "Category X" : [[5, 8, 12, 15, 19, 21, 24], [7, 9, 11, 14, 16, 20, 23]],
+    "Category Y" : [[3, 6, 9, 13, 18, 22, 25], [4, 7, 10, 12, 15, 19, 21]],
+    "Category Z" : [[2, 4, 7, 11, 14, 17, 20], [1, 3, 8, 10, 13, 17, 22]]
+}
+```
+#### Step 2: Unclassified Sequence
+You should also have an unclassified sequence for which you want to determine the label. For example:
 
+```bash
+unclassified = [5, 8, 12, 15, 19, 21, 24]
+```
 
-## Architecture of KNN Classifier:
+#### Step 3: Training the KNN Model
 
-<img width="222" alt="image" src="https://github.com/IndranilSaha09/neocortexapi/assets/52401793/3cd1f1ad-f137-4ebb-8b71-8cabe62a050e">
+Using your implementation, feed the labeled sequences (models) into the KNN classifier using a method like Learn. The KNN model will `learn` from these sequences and store them for future classification.
 
+#### Step 4: Classifying the Unclassified Sequence
+Next, use the KNN classifier's GetPredictedInputValues method to predict the label for the unclassified sequence. You can specify how many nearest neighbors to consider (e.g., 3) during the classification.
 
-The implemented architecture combines Hierarchical Temporal Memory (HTM) and a K-nearest neighbors (KNN) classifier for sequence learning. Leveraging HTM functionalities such as CortexLayer and TemporalMemory from the NeoCortexApi namespace, the process involves configuring HTM parameters and employing a ScalarEncoder to transform scalar values into sparse distributed representations (SDRs). The experiment execution follows a sequence, initializing HTM components (SpatialPooler, TemporalMemory), and the KNN classifier. Training begins with the Spatial Pooler (SP), achieving stability before joint training of SP and Temporal Memory (TM) with provided sequences. The KNN classifier operates alongside HTM, utilizing active and winner cells to predict future elements in sequences, complementing HTM's sequence learning capabilities.
+#### Step 5: Verdict
+The result of the classification will be a list of ClassifierResult objects. These objects contain the predicted labels and potentially additional information about the prediction.
 
-#### Cosine Similarity Calculation:
+Example Output
+In this example, the predicted labels for the unclassified sequence may be as follows:
 
-Cosine similarity measures the similarity between two non-zero vectors:
+"Category X" being the closest match.
+"Category Y" as the next closest match.
+And so on...
 
-Cosine Similarity = dot product(A, B) / (||A|| * ||B||)
+`PredictedInputValues=[Category X,Category Y,....]`
 
-In this case, Cosine Similarity = 0.8104
-
-#### Distance Table : 
-A distance table in the context of KNN is a matrix or table that stores the computed distances between each pair of points in the dataset. This table facilitates the quick identification of the nearest neighbors to a given unclassified point by allowing for efficient lookups of distances, rather than recalculating them each time a prediction is needed.
-
-#### Distance Table for Unclassified Element 1857:
-- Class 1: Distance = 5
-- Class 2: Distance = 7
-- Class 3: Distance = 9
-
-#### Softmax Weight Calculation:
-Using `CalculateSoftmaxWeights` method with softness parameter = 0.5:
-
-- Class 1: Weight ≈ -3.184
-- Class 2: Weight ≈ -2.884
-- Class 3: Weight ≈ -2.584
-
-#### Softmax Normalization:
-Applying Softmax method to weights:
-
-- Class 1: Probability ≈ 0.1585
-- Class 2: Probability ≈ 0.2900
-- Class 3: Probability ≈ 0.5515
-
-#### Weightage Mechanism:
-Based on probabilities:
-
-- Class 3 (Probability ≈ 0.5515) - Highest weight.
-- Class 2 (Probability ≈ 0.2900) - Second-highest weight.
-- Class 1 (Probability ≈ 0.1585) - Lowest weight.
-
-The Softmax-based classification for the unclassified set, with corresponding probabilities, is as follows:
-
-Predicted Class: Class 3
-Probability: Approximately 0.5515
-
-Second Predicted Class: Class 2
-Probability: Approximately 0.2900
-
-Third Predicted Class: Class 1
-Probability: Approximately 0.1585
-
-This outcome indicates that, according to the Softmax-weighted mechanism, the unclassified set is most likely associated with Class 3, followed by Class 2 and then Class 1. The probabilities represent the model's confidence in each classification based on the calculated Softmax weights.
-
-
-## Softmax Weightage Mechanism
-
-In this project, the softmax function is utilized to determine the weightage of different classes in the final output, contributing to effective classification. The softmax operation involves converting a set of weights into a probability distribution, ensuring that the highest probability class receives the maximum weight.
-
-### Softmax Function
-
-The softmax function is mathematically represented as:
-
-![image](https://github.com/IndranilSaha09/neocortexapi/assets/52401793/ea4692e4-aa67-4f0d-b9f1-03b809b6c6e1)
-
-
-### Weight Calculation
-
-To obtain weights for different classes, the softmax function is applied to the initial weights, resulting in a probability distribution. The weights are then determined based on these probabilities.
-
-### Softmax Normalization
-
-After calculating weights using the softmax function, the weights are normalized to ensure they sum up to 1. This normalization step enhances interpretability and aids in determining the significance of each class in the final decision.
-
-### Output Decision
-
-The final output is influenced by the probabilities assigned to each class. The class with the highest probability is given the maximum weight, influencing the model's decision-making process.
-
-This softmax weightage mechanism is crucial for effective classification and is employed to enhance the interpretability of the model's predictions.
-
+The output is a list of `ClassifierResult` objects that provide a verdict on the label prediction.
 
 ## Approaches of KNN Classifier:
 
-| **Approach 1: Simple Weightage Algorithm** |  |
+| **Approach 1: Simple Weightage Algorithm Uses** |  |
 | --- | --- |
-| **Prediction and Weightage Methods** | [GetPredictedInputValues](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L278), [SelectBestClassification](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L444) |
-| **Metrics Available** | [LeastValue](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L329), [ComputeCosineSimilarity](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L374) |
-| **Distance Table Methods** | [GetDistanceTable](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L348), [GetDistanceTableforCosine](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L403) |
+| **Prediction Method** | [GetPredictedInputValues](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L196) |
+| **Weightage Method** | [SelectBestClassification](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L379) |
+| **Metrics Available** | [LeastValue](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L252) |
+| **Distance Table Method** | [GetDistanceTable](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L271) |
 
-| **Approach 2: SoftMax Algorithm**          |  |
+
+| **Approach 2: SoftMax Algorithm Uses** |  |
 | --- | --- |
-| **Prediction and Weightage Methods**       | [PredictWithSoftmax](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L555), [CalculateSoftmaxWeights](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L648) |
-| **Metrics Available** | [ComputeCosineSimilarity](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L374) |
-| **Distance Table Method** | [GetDistanceTableforCosine](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L403)  |
-| **Probability Method** | [Softmax](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L620) |
+| **Prediction Method** | [PredictWithSoftmax](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L490) (used inside `GetPredictedInputValues`) |
+| **Weightage Method** | [CalculateSoftmaxWeights](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L586) |
+| **Metrics Available** | [ComputeCosineSimilarity](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L309) |
+| **Distance Table Method** | [GetDistanceTableforCosine](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L338)  |
+| **Probability Method** | [Softmax](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/KnnClassifier.cs#L558) |
+
+#### To use SoftMax Algorithm
+
+To enable the use of SoftMax algorithm, follow these steps:
+
+1. Navigate to [MultiSequenceLearning.cs](https://github.com/IndranilSaha09/neocortexapi/blob/master/source/Samples/NeoCortexApiSample/MultisequenceLearning.cs#L101)
+2. Locate the following line of code:
+
+```csharp
+IClassifier<string,ComputeCycle>cls = new KNeighborsClassifier<string, ComputeCycle>(useSoftmax:false);
+```
+
+3. Change it to:
+```csharp
+IClassifier<string,ComputeCycle>cls = new KNeighborsClassifier<string, ComputeCycle>(useSoftmax:true);
+```
 
 
 ## Getting Started:
